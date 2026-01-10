@@ -17,7 +17,7 @@ interface ToastStore {
 export const useToastStore = create<ToastStore>((set) => ({
   toasts: [],
   addToast: (message, type = "info") => {
-    const id = Date.now().toString();
+    const id = crypto.randomUUID();
     set((state) => ({
       toasts: [...state.toasts, { id, message, type }],
     }));

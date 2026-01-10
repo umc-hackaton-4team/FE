@@ -1,6 +1,6 @@
 import { useToastStore } from "../../store/toastStore";
 
-const typeStyles = {
+const TYPE_STYLES = {
   success: "bg-green-500",
   error: "bg-red-500",
   info: "bg-blue-500",
@@ -21,7 +21,7 @@ export function ToastContainer() {
             px-4 py-3 rounded-lg text-white text-sm font-medium
             shadow-lg animate-fade-in min-w-[280px] max-w-[360px]
             flex items-center justify-between gap-2
-            ${typeStyles[toast.type]}
+            ${TYPE_STYLES[toast.type]}
           `}
         >
           <span>{toast.message}</span>
