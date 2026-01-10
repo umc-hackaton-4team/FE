@@ -35,6 +35,7 @@ export default function ArchivePage() {
   const memoriesByDate = useMemo(() => {
     const grouped: Record<string, Memory[]> = {};
     memories.forEach((memory) => {
+      if (!memory.createdAt) return;
       const dateKey = memory.createdAt.split("T")[0];
       if (!grouped[dateKey]) {
         grouped[dateKey] = [];
