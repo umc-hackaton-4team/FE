@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
 import { toast } from "../../store/toastStore";
 import { Spinner } from "./Spinner";
 
@@ -18,9 +19,9 @@ export const DemoDataModal = ({ isOpen, onClose }: DemoDataModalProps) => {
     try {
       // 3개의 mock API를 병렬로 호출
       await Promise.all([
-        api.post("/mock/recommendations"),
-        api.post("/mock/memories"),
-        api.post("/mock/conditions"),
+        api.post(API_ENDPOINTS.MOCK.RECOMMENDATIONS),
+        api.post(API_ENDPOINTS.MOCK.MEMORIES),
+        api.post(API_ENDPOINTS.MOCK.CONDITIONS),
       ]);
       toast.success("데모 데이터가 성공적으로 생성되었어요!");
       onClose();

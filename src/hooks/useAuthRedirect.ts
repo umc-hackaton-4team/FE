@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
+import { API_ENDPOINTS } from "../api/endpoints";
 import { useAuthStore } from "../store/authStore";
 
 interface UserResponse {
@@ -28,7 +29,7 @@ export const useAuthRedirect = () => {
 
         try {
           // 2. 사용자 정보 조회
-          const { data } = await api.get<UserResponse>("/users/me");
+          const { data } = await api.get<UserResponse>(API_ENDPOINTS.USERS.ME);
           setUser(data.result);
         } catch (error) {
           console.error("사용자 정보 조회 실패:", error);

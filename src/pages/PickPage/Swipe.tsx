@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
 import { useToastStore } from "../../store/toastStore";
 import { Spinner } from "../../components/common/Spinner";
 import type { User } from "../../types/user";
@@ -28,7 +29,7 @@ export default function SwipePage() {
   // 로그인한 사용자 정보 가져오기
   useEffect(() => {
     api
-      .get<ApiResponse<User>>("/users/me")
+      .get<ApiResponse<User>>(API_ENDPOINTS.USERS.ME)
       .then((res) => setUser(res.data.data))
       .catch((err) => {
         console.error(err);
@@ -47,7 +48,7 @@ export default function SwipePage() {
     };
 
     try {
-      await api.post("/conditions", payload);
+      await api.post(API_ENDPOINTS.CONDITIONS.BASE, payload);
       addToast("오늘 상태가 저장되었습니다!", "success");
       navigate("/pick/loading");
     } catch (err: unknown) {

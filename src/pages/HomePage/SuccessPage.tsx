@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
 import { CANDY_MAP } from "../../constants/candyImages";
 import type { User } from "../../types/user";
 import type { Memory } from "../../types/memory";
@@ -17,8 +18,8 @@ export default function SuccessPage() {
     const fetchData = async () => {
       try {
         const [userRes, memoryRes] = await Promise.all([
-          api.get<ApiResponse<User>>("/users/me"),
-          api.get<ApiResponse<Memory[]>>("/api/memories"),
+          api.get<ApiResponse<User>>(API_ENDPOINTS.USERS.ME),
+          api.get<ApiResponse<Memory[]>>(API_ENDPOINTS.MEMORIES.BASE),
         ]);
 
         if (userRes.data?.success) {

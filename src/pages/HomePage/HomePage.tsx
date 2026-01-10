@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
 import type { User } from "../../types/user";
 import type { ApiResponse } from "../../types/api";
 import { toast } from "../../store/toastStore";
@@ -29,7 +30,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await api.get<ApiResponse<User>>("/users/me");
+        const res = await api.get<ApiResponse<User>>(API_ENDPOINTS.USERS.ME);
         setUser(res.data.data);
       } catch (error) {
         console.error("사용자 정보 조회 실패:", error);
@@ -96,7 +97,7 @@ export default function HomePage() {
         JSON.stringify({ content, candyColor: selectedColor })
       );
 
-      await api.post(`/memories?request=${query}`, formData, {
+      await api.post(`${API_ENDPOINTS.MEMORIES.BASE}?request=${query}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

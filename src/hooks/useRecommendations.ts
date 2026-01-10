@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/axios";
+import { API_ENDPOINTS } from "../api/endpoints";
 import { getTodayDate } from "../utils/dateUtils";
 import type { Recommendation, RecommendationsData } from "../types/recommendation";
 import type { ApiResponse } from "../types/api";
@@ -20,7 +21,7 @@ export const useRecommendations = () => {
       try {
         const today = getTodayDate();
         const res = await api.get<ApiResponse<RecommendationsData>>(
-          `/recommendations?date=${today}`
+          `${API_ENDPOINTS.RECOMMENDATIONS.BASE}?date=${today}`
         );
         setRecommendations(res.data.data.recommendations);
       } catch (err) {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
 import { useToastStore } from "../../store/toastStore";
 import { Spinner } from "../../components/common/Spinner";
 import specialcandy from "../../assets/icons/specialcandy.svg";
@@ -46,7 +47,7 @@ export default function AchievementPage() {
     setLoading(true);
     try {
       // 완료 API 호출
-      await api.post(`/recommendations/${item.id}/complete`, {
+      await api.post(API_ENDPOINTS.RECOMMENDATIONS.COMPLETE(item.id), {
         memo,
       });
       addToast("사탕이 만들어졌어요!", "success");
