@@ -3,15 +3,15 @@
 ## 1. API 연동 완성도 (40점)
 
 ### 요청 성공/실패 처리
-- [ ] API 요청 성공 시 적절한 데이터 바인딩
-- [ ] API 요청 실패 시 에러 메시지 표시
-- [ ] 네트워크 에러 처리 (타임아웃, 연결 실패 등)
+- [x] API 요청 성공 시 적절한 데이터 바인딩
+- [x] API 요청 실패 시 에러 메시지 표시 (Toast)
+- [x] 네트워크 에러 처리 (axios 인터셉터)
 - [x] 401/403 에러 시 로그인 페이지 리다이렉트 (axios 인터셉터)
 
 ### 로딩 상태 UI/UX
-- [ ] 페이지 전환 시 로딩 인디케이터
-- [ ] API 요청 중 Skeleton UI 또는 Spinner
-- [ ] 버튼 클릭 시 로딩 상태 표시 (중복 클릭 방지)
+- [x] 페이지 전환 시 로딩 인디케이터
+- [x] API 요청 중 Skeleton UI 또는 Spinner
+- [x] 버튼 클릭 시 로딩 상태 표시 (중복 클릭 방지)
 
 ### 사용자 경험 고려
 - [ ] Pagination 또는 InfiniteScroll 구현 (목록 페이지)
@@ -19,9 +19,9 @@
 - [x] 에러 발생 시 재시도 버튼
 
 ### Hook 분리
-- [x] useAuth 훅 구현
 - [x] useAuthRedirect 훅 구현
 - [x] useApi 훅 구현 (axios 기반 API 요청 + 로딩/에러 상태)
+- [x] useUser, useRecommendations 훅 구현
 
 ---
 
@@ -118,7 +118,7 @@
 ### TypeScript
 - [x] TypeScript 사용
 - [x] 타입 정의 파일 분리 (types/)
-- [ ] any 타입 사용 최소화
+- [x] any 타입 사용 최소화 (현재 0개)
 
 ### 보안
 - [x] .env 파일 .gitignore 확인
@@ -156,5 +156,4 @@
 
 ### 진행 필요
 - [ ] Modal 컴포넌트
-- [ ] 로딩 상태 UI 적용
-- [ ] API 연동 및 에러 처리
+- [ ] Pagination/InfiniteScroll (필요시)

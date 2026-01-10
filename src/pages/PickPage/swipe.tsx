@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { useToastStore } from "../../store/toastStore";
+import { Spinner } from "../../components/common/Spinner";
 
 type ConditionForm = {
   energyLevel: "LOW" | "NORMAL" | "HIGH";
@@ -103,9 +104,16 @@ export default function SwipePage() {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="flex-1 rounded-xl bg-red-400 py-3 text-sm font-semibold text-white disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-red-400 py-3 text-sm font-semibold text-white disabled:opacity-50"
         >
-          오늘의 사탕 뽑기
+          {loading ? (
+            <>
+              <Spinner size="sm" className="text-white" />
+              처리 중...
+            </>
+          ) : (
+            "오늘의 사탕 뽑기"
+          )}
         </button>
       </div>
     </div>
