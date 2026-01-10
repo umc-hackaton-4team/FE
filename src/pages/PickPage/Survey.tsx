@@ -3,34 +3,40 @@ import { useNavigate } from "react-router-dom";
 import BatteryFull from "../../assets/icons/battery-full.svg";
 import BatteryHalf from "../../assets/icons/battery-half.svg";
 import BatteryEmpty from "../../assets/icons/battery-empty.svg";
+import type {
+  EnergyLevel,
+  AvailableTime,
+  SpendingLevel,
+  ActivityLocation,
+} from "../../types/dailyCondition";
 
 type ConditionForm = {
-  energyLevel: "LOW" | "NORMAL" | "HIGH";
-  availableTime: "SHORT" | "MODERATE" | "LONG";
-  spendingLevel: "NONE" | "LIGHT" | "HEAVY";
-  activityLocation: "INSIDE" | "OUTSIDE" | "ANY";
+  energyLevel: EnergyLevel;
+  availableTime: AvailableTime;
+  spendingLevel: SpendingLevel;
+  activityLocation: ActivityLocation;
 };
 
 type EnergyOption = {
   label: string;
-  value: "LOW" | "NORMAL" | "HIGH";
+  value: EnergyLevel;
   icon: string;
 };
 
 const energyOptions: EnergyOption[] = [
-  { label: "풀 충전 상태", value: "HIGH", icon: BatteryFull },
+  { label: "풀 충전 상태", value: "FULL", icon: BatteryFull },
   { label: "보통", value: "NORMAL", icon: BatteryHalf },
-  { label: "방전..", value: "LOW", icon: BatteryEmpty },
+  { label: "방전..", value: "DEPLETED", icon: BatteryEmpty },
 ];
 
 export default function SurveyPage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<ConditionForm>({
-    energyLevel: "HIGH",
+    energyLevel: "FULL",
     availableTime: "MODERATE",
     spendingLevel: "LIGHT",
-    activityLocation: "ANY",
+    activityLocation: "HOME",
   });
 
   const handleSubmit = () => {
@@ -93,7 +99,7 @@ export default function SurveyPage() {
           {[
             { label: "10분 내외", value: "SHORT" as const },
             { label: "1시간 내외", value: "MODERATE" as const },
-            { label: "반나절 또는 하루", value: "LONG" as const },
+            { label: "반나절 또는 하루", value: "HALF_DAY" as const },
           ].map((opt) => {
             const active = form.availableTime === opt.value;
             return (
@@ -120,7 +126,7 @@ export default function SurveyPage() {
         </p>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: "무지출", value: "NONE" as const },
+            { label: "무지출", value: "FREE" as const },
             { label: "가벼운 소비", value: "LIGHT" as const },
             { label: "많이 써보자!", value: "HEAVY" as const },
           ].map((opt) => {
@@ -147,11 +153,10 @@ export default function SurveyPage() {
         <p className="mb-3 text-[16px] font-semibold text-[#222]">
           Q4. 어디서 행복을 찾고 계시나요?
         </p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           {[
-            { label: "집 안 또는 실내", value: "INSIDE" as const },
+            { label: "집 안 또는 실내", value: "HOME" as const },
             { label: "야외로 나가자!", value: "OUTSIDE" as const },
-            { label: "상관 없어요.", value: "ANY" as const },
           ].map((opt) => {
             const active = form.activityLocation === opt.value;
             return (

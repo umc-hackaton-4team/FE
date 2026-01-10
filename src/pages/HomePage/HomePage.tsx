@@ -96,7 +96,7 @@ export default function HomePage() {
         JSON.stringify({ content, candyColor: selectedColor })
       );
 
-      await api.post(`/api/memories?request=${query}`, formData, {
+      await api.post(`/memories?request=${query}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
