@@ -4,6 +4,7 @@ import { api } from "../../api/axios";
 import type { User } from "../../types/user";
 import { toast } from "../../store/toastStore";
 import imageCompression from "browser-image-compression";
+import { Spinner } from "../../components/common/Spinner";
 
 const COLORS = [
   { name: "YELLOW", className: "bg-[#FFD588]" },
@@ -15,9 +16,11 @@ const COLORS = [
 
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
+  const [userLoading, setUserLoading] = useState(true);
   const [content, setContent] = useState("");
   const [selectedColor, setSelectedColor] = useState("YELLOW");
   const [images, setImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
@@ -27,9 +30,18 @@ export default function HomePage() {
   }요일`;
 
   useEffect(() => {
-    api.get("/users/me").then((res) => {
-      setUser(res.data.data);
-    });
+    const fetchUser = async () => {
+      try {
+        const res = await api.get("/users/me");
+        setUser(res.data.data);
+      } catch (error) {
+        console.error("사용자 정보 조회 실패:", error);
+        toast.error("사용자 정보를 불러오지 못했어요");
+      } finally {
+        setUserLoading(false);
+      }
+    };
+    fetchUser();
   }, []);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +78,9 @@ export default function HomePage() {
       return;
     }
 
+    if (isSubmitting) return; // 중복 클릭 방지
+
+    setIsSubmitting(true);
     try {
       const formData = new FormData();
       images.forEach((img) => formData.append("images", img));
@@ -86,6 +101,8 @@ export default function HomePage() {
     } catch (err) {
       console.error(err);
       toast.error("이미 오늘 기록을 작성했거나 서버 오류가 발생했어요!");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -93,7 +110,13 @@ export default function HomePage() {
     <div className="flex h-full flex-col bg-[#FFFCF7] px-4 pb-[88px] pt-4">
       <section>
         <p className="text-lg font-bold">
-          안녕하세요, {user?.name ?? "User"} 님!
+          안녕하세요,{" "}
+          {userLoading ? (
+            <span className="inline-block h-5 w-16 animate-pulse rounded bg-gray-200" />
+          ) : (
+            user?.name ?? "User"
+          )}{" "}
+          님!
         </p>
         <p className="text-lg font-bold">오늘은 어떤 행복이 있었나요?</p>
       </section>
@@ -164,9 +187,17 @@ export default function HomePage() {
 
       <button
         onClick={handleSubmit}
-        className="mt-4 rounded-xl bg-[#FF7A7A] py-4 font-semibold text-white"
+        disabled={isSubmitting}
+        className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-[#FF7A7A] py-4 font-semibold text-white disabled:opacity-70"
       >
-        기록 저장하기
+        {isSubmitting ? (
+          <>
+            <Spinner size="sm" className="text-white" />
+            저장 중...
+          </>
+        ) : (
+          "기록 저장하기"
+        )}
       </button>
     </div>
   );

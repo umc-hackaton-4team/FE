@@ -111,7 +111,7 @@ export default function MemoryDetailPage() {
         {/* 이미지들 */}
         <div className="mt-4 grid grid-cols-4 gap-3">
           {[0, 1, 2, 3].map((index) => {
-            const imageUrl = memory.images?.[index];
+            const imageUrl = memory.imageUrls?.[index];
             return (
               <div
                 key={index}
