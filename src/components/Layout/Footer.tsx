@@ -1,22 +1,20 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
-import InactiveRecord from "../../asserts/icons/graynote.svg";
-import ActiveRecord from "../../asserts/icons/graynote.svg";
+import InactiveRecord from "../../assets/icons/graynote.svg";
+import ActiveRecord from "../../assets/icons/graynote.svg";
 
-import InactivePickBox from "../../asserts/icons/graybox.svg";
-import ActivePickBox from "../../asserts/icons/graybox.svg";
+import InactivePickBox from "../../assets/icons/graybox.svg";
+import ActivePickBox from "../../assets/icons/graybox.svg";
 
-
-import InactivePen from "../../asserts/icons/orangepen.svg";
-import ActivePen from "../../asserts/icons/orangepen.svg";
+import InactivePen from "../../assets/icons/orangepen.svg";
+import ActivePen from "../../assets/icons/orangepen.svg";
 
 const navItems = [
   {
     label: "기록하기",
     path: "/record",
     ActiveIcon: ActivePen,
-    InactiveIcon:InactivePen,
-
+    InactiveIcon: InactivePen,
   },
   {
     label: "할 일 뽑기",
@@ -40,7 +38,7 @@ export default function FooterBar() {
     <nav className="fixed bottom-0 left-1/2 z-50 w-full max-w-[430px] -translate-x-1/2 border-t bg-white">
       <ul className="flex h-16">
         {navItems.map(({ label, path, ActiveIcon, InactiveIcon }) => {
-           const isActive = location.pathname.startsWith(path);
+          const isActive = location.pathname.startsWith(path);
           const iconSrc = isActive ? ActiveIcon : InactiveIcon;
 
           return (
@@ -49,11 +47,7 @@ export default function FooterBar() {
                 type="button"
                 onClick={() => navigate(path)}
                 className={`flex h-full w-full flex-col items-center justify-center gap-1 text-xs transition
-                ${
-                  isActive
-                    ? "text-red-500 font-semibold"
-                    : "text-gray-400"
-                }`}
+                ${isActive ? "text-red-500 font-semibold" : "text-gray-400"}`}
               >
                 <img src={iconSrc} alt={label} className="h-5 w-5" />
                 <span>{label}</span>
