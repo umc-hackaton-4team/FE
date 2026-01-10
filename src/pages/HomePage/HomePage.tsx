@@ -3,7 +3,6 @@ import axios from "axios";
 
 import type { User } from "../../types/user";
 import type { DailyConditionRequest } from "../../types/dailyCondition";
-import FooterBar from "../../components/Layout/Footer";
 
 const COLORS = [
   { name: "red", className: "bg-red-300" },
@@ -13,7 +12,7 @@ const COLORS = [
   { name: "blue", className: "bg-blue-300" },
 ];
 
-export default function RecordPage() {
+export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>("red");
   const [images, setImages] = useState<File[]>([]);
@@ -33,14 +32,12 @@ export default function RecordPage() {
     ["일", "월", "화", "수", "목", "금", "토"][today.getDay()]
   }요일`;
 
-  /* 유저 정보 조회 */
   useEffect(() => {
-    axios.get("https://goodgame.snowfrost.kr/api/users/me").then((res) => {
-      setUser(res.data.data);
-    });
+    axios
+      .get("https://goodgame.snowfrost.kr/api/users/me")
+      .then((res) => setUser(res.data.data));
   }, []);
 
-  /* 이미지 선택 */
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -53,10 +50,15 @@ export default function RecordPage() {
     e.target.value = "";
   };
 
-  /* 저장 */
   const handleSubmit = async () => {
     try {
-      await axios.post("", form);
+      await axios.post(
+        "https://goodgame.snowfrost.kr/api/daily-conditions",
+        {
+          ...form,
+          color: selectedColor,
+        }
+      );
       alert("오늘 기록이 저장되었어요 🌱");
     } catch {
       alert("이미 오늘 기록을 작성했어요!");
@@ -64,116 +66,102 @@ export default function RecordPage() {
   };
 
   return (
-    <div className="relative mx-auto min-h-screen max-w-[430px] bg-[#FFF8F6]">
-      <main className="mx-auto w-full max-w-[430px] px-5 pb-24">
-        {/* 인사 */}
-        <section className="pt-6">
-          <p className="text-lg font-semibold">
-            안녕하세요, {user?.name ?? "User"} 님!
-          </p>
-          <p className="text-lg font-semibold">
-            오늘은 어떤 행복이 있었나요?
-          </p>
-        </section>
+    <div className="bg-[#FFFCF7] px-5">
+     
+      <section className="pt-6">
+        <p className="text-lg font-semibold">
+          안녕하세요, {user?.name ?? "User"} 님!
+        </p>
+        <p className="text-lg font-semibold">
+          오늘은 어떤 행복이 있었나요?
+        </p>
+      </section>
 
-        {/* 컬러 선택 */}
-        <section className="mt-6">
-          <p className="mb-3 text-sm font-semibold">
-            오늘은 어떤 색으로 기록을 꾸며볼까요?
-          </p>
+      <section className="mt-6">
+        <p className="mb-3 text-sm font-semibold">
+          오늘은 어떤 색으로 기록을 꾸며볼까요?
+        </p>
 
-          <div className="flex gap-3">
-            {COLORS.map((color) => (
-              <button
-                key={color.name}
-                onClick={() => setSelectedColor(color.name)}
-                className={`h-10 w-10 rounded-full ${color.className} ${
-                  selectedColor === color.name
-                    ? "ring-2 ring-black"
-                    : ""
-                }`}
-              />
-            ))}
-          </div>
-        </section>
+        <div className="flex gap-3">
+          {COLORS.map((color) => (
+            <button
+              key={color.name}
+              onClick={() => setSelectedColor(color.name)}
+              className={`h-10 w-10 rounded-full ${color.className} ${
+                selectedColor === color.name
+                  ? "ring-2 ring-black"
+                  : ""
+              }`}
+            />
+          ))}
+        </div>
+      </section>
 
-        {/* 기록 카드 */}
-        <section className="mt-4 rounded-2xl bg-white p-4 shadow">
-          <p className="mb-2 text-sm font-medium">{dateText}</p>
+      <section className="mt-4 rounded-2xl bg-white p-4 shadow">
+        <p className="mb-2 text-sm font-medium">{dateText}</p>
 
-          <textarea
-            placeholder="오늘 있었던 행복한 일을 기록해보세요!"
-            value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
-            className="h-40 w-full resize-none rounded-lg border p-3 text-sm focus:outline-none"
+        <textarea
+          placeholder="오늘 있었던 행복한 일을 기록해보세요!"
+          value={form.description}
+          onChange={(e) =>
+            setForm({ ...form, description: e.target.value })
+          }
+          className="h-40 w-full resize-none rounded-lg border p-3 text-sm focus:outline-none"
+        />
+
+        <div className="mt-4">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            className="hidden"
           />
 
-          {/* 이미지 업로드 */}
-          <div className="mt-4">
-            <p className="mb-2 text-sm font-medium">
-              사진 추가 (최대 4장)
-            </p>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-              className="hidden"
-            />
-
-            <div className="grid grid-cols-4 gap-3">
-              {/* 미리보기 */}
-              {images.map((file, idx) => (
-                <div
-                  key={idx}
-                  className="relative h-20 w-full overflow-hidden rounded-xl"
-                >
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                  <button
-                    onClick={() =>
-                      setImages(images.filter((_, i) => i !== idx))
-                    }
-                    className="absolute right-1 top-1 rounded-full bg-black/60 px-1 text-xs text-white"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-
-              {/* 추가 버튼 */}
-              {images.length < 4 && (
+          <div className="grid grid-cols-4 gap-3">
+            {images.map((file, idx) => (
+              <div
+                key={idx}
+                className="relative h-20 w-full overflow-hidden rounded-xl"
+              >
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
                 <button
-                  type="button"
                   onClick={() =>
-                    fileInputRef.current?.click()
+                    setImages(images.filter((_, i) => i !== idx))
                   }
-                  className="flex h-20 w-full items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white text-gray-400"
+                  className="absolute right-1 top-1 rounded-full bg-black/60 px-1 text-xs text-white"
                 >
-                  <span className="text-2xl">＋</span>
+                  ✕
                 </button>
-              )}
-            </div>
+              </div>
+            ))}
+
+            {images.length < 4 && (
+              <button
+                type="button"
+                onClick={() =>
+                  fileInputRef.current?.click()
+                }
+                className="flex h-20 w-full items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-gray-400"
+              >
+                <span className="text-2xl">＋</span>
+              </button>
+            )}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* 저장 버튼 */}
-        <button
-          onClick={handleSubmit}
-          className="mt-6 w-full rounded-xl bg-red-400 py-4 font-semibold text-white"
-        >
-          기록 저장하기
-        </button>
-      </main>
-
-      <FooterBar />
+      <button
+        onClick={handleSubmit}
+        className="mt-6 mb-24 w-full rounded-xl bg-red-400 py-4 font-semibold text-white"
+      >
+        기록 저장하기
+      </button>
     </div>
   );
 }
