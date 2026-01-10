@@ -20,11 +20,6 @@ export default function LoginPage() {
       <div className="mt-[196px] flex flex-col items-center">
         {/* 로고 영역 */}
         <img src={LogoSymbol} alt="BONBON 로고" className="size-[150px]" />
-
-        {/* 카피 텍스트 */}
-        <p className="text-h2 mt-6 text-gray-8">
-          뭔가 카피 넣으면 좋겠는데
-        </p>
       </div>
 
       {/* 로그인 버튼 영역 */}
