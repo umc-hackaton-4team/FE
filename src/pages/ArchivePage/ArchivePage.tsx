@@ -100,7 +100,7 @@ export default function ArchivePage() {
   };
 
   return (
-    <div className="flex h-full flex-col bg-main px-4 pb-[88px] pt-4">
+    <div className="flex h-full flex-col bg-main px-4 pt-4">
       {/* 캘린더 */}
       <Calendar
         currentDate={currentDate}
