@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
+import { toast } from "../../store/toastStore";
+import { Spinner } from "../../components/common/Spinner";
 import BatteryFull from "../../assets/icons/battery-full.svg";
 import BatteryHalf from "../../assets/icons/battery-half.svg";
 import BatteryEmpty from "../../assets/icons/battery-empty.svg";
@@ -31,6 +35,7 @@ const energyOptions: EnergyOption[] = [
 
 export default function SurveyPage() {
   const navigate = useNavigate();
+  const [checkingCondition, setCheckingCondition] = useState(true);
 
   const [form, setForm] = useState<ConditionForm>({
     energyLevel: "FULL",
@@ -39,9 +44,36 @@ export default function SurveyPage() {
     activityLocation: "HOME",
   });
 
+  // 오늘 이미 condition을 제출했는지 확인
+  useEffect(() => {
+    const checkExistingCondition = async () => {
+      try {
+        await api.get(API_ENDPOINTS.CONDITIONS.BASE);
+        // 성공하면 이미 오늘 condition이 있음 → 결과 페이지로 이동
+        toast.info("이미 오늘의 설문을 완료했어요! 추천 결과를 확인하세요.");
+        navigate("/pick/result", { replace: true });
+      } catch (error: unknown) {
+        // 404면 오늘 condition이 없음 → 설문 진행
+        // 다른 에러는 무시하고 설문 진행
+        setCheckingCondition(false);
+      }
+    };
+
+    checkExistingCondition();
+  }, [navigate]);
+
   const handleSubmit = () => {
     navigate("/pick/swipe", { state: form });
   };
+
+  // 기존 condition 체크 중일 때 로딩 표시
+  if (checkingCondition) {
+    return (
+      <div className="flex h-full items-center justify-center bg-[#FFFCF7]">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#FFFCF7] px-4 pb-24">
