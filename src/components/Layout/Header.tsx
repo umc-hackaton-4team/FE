@@ -1,4 +1,4 @@
-import Logo from "../../assets/icons/graybox.svg";
+import Logo from "../../assets/icons/logo-horizontal.svg";
 
 export default function Header() {
   return (
@@ -6,8 +6,8 @@ export default function Header() {
       <div className="mx-auto flex h-[67px] max-w-[430px] items-center px-5">
         <img
           src={Logo}
-          alt="logo"
-          className="h-6 object-contain"
+          alt="BONBON 로고"
+          className="h-8 object-contain"
         />
       </div>
     </header>
