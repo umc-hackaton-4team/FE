@@ -58,7 +58,7 @@ export default function SwipePage() {
     };
 
     try {
-      await api.post("/conditions", payload);
+      await api.post("/api/conditions", payload);
       addToast("오늘 상태가 저장되었습니다!", "success");
       navigate("/pick/loading");
     } catch (err: unknown) {
