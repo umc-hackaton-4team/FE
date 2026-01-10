@@ -1,3 +1,5 @@
+import specialcandy from "../../assets/icons/specialcandy.svg";
+
 // 디자인에 필요한 데이터들을 정의합니다.
 interface BoxProps {
   id?: number;
@@ -6,7 +8,7 @@ interface BoxProps {
 }
 
 const RecommendationBox = ({
-  imageUrl,
+  imageUrl = specialcandy,
   content = "집 근처에서 산책하기",
 }: BoxProps) => {
   return (
