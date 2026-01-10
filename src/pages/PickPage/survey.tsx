@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OptionBox from "../../components/common/OptionBox";
-import { api } from "../../api/axios";
 
 type ConditionForm = {
   energyLevel: "LOW" | "NORMAL" | "HIGH";
@@ -20,13 +19,8 @@ export default function SurveyPage() {
     activityLocation: "ANY",
   });
 
-  const handleSubmit = async () => {
-    try {
-      await api.post("/conditions", form);
-      navigate("/pick/swipe");
-    } catch {
-      alert("이미 오늘 상태를 저장했어요!");
-    }
+  const handleSubmit = () => {
+    navigate("/pick/swipe", { state: form });
   };
 
   return (
@@ -79,9 +73,7 @@ export default function SurveyPage() {
           { label: "상관 없어요.", value: "ANY" },
         ]}
         selected={form.activityLocation}
-        onSelect={(v) =>
-          setForm({ ...form, activityLocation: v })
-        }
+        onSelect={(v) => setForm({ ...form, activityLocation: v })}
       />
 
       <button
