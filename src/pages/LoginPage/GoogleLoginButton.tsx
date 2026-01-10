@@ -1,10 +1,20 @@
+import googleIcon from "../../assets/icons/google.svg";
+
 export const GoogleLoginButton = () => {
   const handleLogin = () => {
-    // 백엔드의 구글 로그인 엔드포인트로 이동
-    // 이 주소로 이동하면 백엔드가 구글 로그인 창을 띄워줍니다.
     window.location.href =
       "https://goodgame.snowfrost.kr/api/auth/google/login";
   };
 
-  return <button onClick={handleLogin}>Google 계정으로 로그인</button>;
+  return (
+    <button
+      onClick={handleLogin}
+      className="flex h-[60px] w-[398px] items-center justify-center gap-3 rounded-[12px] bg-white shadow-[0px_0px_8px_0px_rgba(0,0,0,0.15)]"
+    >
+      <img src={googleIcon} alt="Google" className="size-6" />
+      <span className="text-[16px] font-bold leading-[1.3] text-black">
+        Google 로그인
+      </span>
+    </button>
+  );
 };
