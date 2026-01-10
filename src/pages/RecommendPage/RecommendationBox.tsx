@@ -1,3 +1,4 @@
+import { memo } from "react";
 import specialcandy from "../../assets/icons/specialcandy.svg";
 
 // 디자인에 필요한 데이터들을 정의합니다.
@@ -34,4 +35,4 @@ const RecommendationBox = ({
   );
 };
 
-export default RecommendationBox;
+export default memo(RecommendationBox);
