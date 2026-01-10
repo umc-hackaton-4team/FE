@@ -75,10 +75,12 @@ export default function AchievementPage() {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("request", JSON.stringify({ memo }));
+      // POST /memories API 형식에 맞게 request 파라미터 설정
+      const content = memo || `"${item.content}" 목표 성취 완료!`;
+      formData.append("request", JSON.stringify({ content, candyColor: "SPECIAL" }));
       images.forEach((img) => formData.append("images", img));
 
-      await api.post(API_ENDPOINTS.RECOMMENDATIONS.COMPLETE(item.id), formData, {
+      await api.post(API_ENDPOINTS.MEMORIES.BASE, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("사탕이 만들어졌어요!");
