@@ -11,7 +11,7 @@ import ActivePen from "../../assets/icons/orangepen.svg";
 
 const NAV_ITEMS = [
   {
-    label: "기록하기",
+    label: "행복 기록",
     path: "/",
     activePaths: ["/"],
     exact: true,
@@ -19,7 +19,7 @@ const NAV_ITEMS = [
     InactiveIcon: InactivePen,
   },
   {
-    label: "행운 뽑기",
+    label: "행복 뽑기",
     path: "/pick",
     activePaths: ["/pick"],
     exact: false,
@@ -27,7 +27,7 @@ const NAV_ITEMS = [
     InactiveIcon: InactivePickCandy,
   },
   {
-    label: "지난 일기",
+    label: "보관함",
     path: "/archive",
     activePaths: ["/archive"],
     exact: false,
