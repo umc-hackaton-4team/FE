@@ -3,8 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Login from "./pages/login";
 import Home from "./pages/home";
-import SurveyA from "./pages/pick/surveyA";
-import SurveyB from "./pages/pick/surveyB";
+import Survey from "./pages/pick/survey";
 import Swipe from "./pages/pick/swipe";
 import Result from "./pages/pick/result";
 import RefinedSwipe from "./pages/pick/refinedSwipe";
@@ -18,8 +17,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/pick/surveyA" element={<SurveyA />} />
-      <Route path="/pick/surveyB" element={<SurveyB />} />
+      <Route path="/pick/survey" element={<Survey />} />
       <Route path="/pick/swipe" element={<Swipe />} />
       <Route path="/pick/result" element={<Result />} />
       <Route path="/pick/refinedSwipe" element={<RefinedSwipe />} />
