@@ -1,11 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
 import InactiveRecord from "../../assets/icons/graynote.svg";
-//import ActiveRecord from "../../assets/icons/orangenote.svg";
+import ActiveRecord from "../../assets/icons/graynote.svg"; // TODO: orangenote.svg 추가 필요
 
 import InactivePickBox from "../../assets/icons/graybox.svg";
 import ActivePickBox from "../../assets/icons/orangebox.svg";
-
 
 import InactivePen from "../../assets/icons/graypen.svg";
 import ActivePen from "../../assets/icons/orangepen.svg";
@@ -16,8 +15,7 @@ const navItems = [
     path: "/",
     activePaths: ["/"],
     ActiveIcon: ActivePen,
-    InactiveIcon:InactivePen,
-
+    InactiveIcon: InactivePen,
   },
   {
     label: "할 일 뽑기",
@@ -30,7 +28,7 @@ const navItems = [
     label: "지난 일기",
     path: "/archive",
     activePaths: ["/archive"],
-    //ActiveIcon: ActiveRecord,
+    ActiveIcon: ActiveRecord,
     InactiveIcon: InactiveRecord,
   },
 ];
@@ -55,11 +53,7 @@ export default function FooterBar() {
                 type="button"
                 onClick={() => navigate(path)}
                 className={`flex h-full w-full flex-col items-center justify-center gap-1 text-xs transition
-                ${
-                  isActive
-                    ? "text-red-500 font-semibold"
-                    : "text-gray-400"
-                }`}
+                ${isActive ? "text-red-500 font-semibold" : "text-gray-400"}`}
               >
                 <img src={iconSrc} alt={label} className="h-5 w-5" />
                 <span>{label}</span>
