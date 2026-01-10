@@ -53,7 +53,7 @@ export default function SuccessPage() {
   const candyKey = latestCandyColor?.toUpperCase();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-[#FFFDF6] px-8 pb-[72px]">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-[#FFFDF6] px-8">
       <div className="mb-10 flex h-[200px] w-[200px] items-center justify-center">
         {candyKey && CANDY_MAP[candyKey] ? (
           <img

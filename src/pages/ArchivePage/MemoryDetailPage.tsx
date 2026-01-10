@@ -82,7 +82,7 @@ export default function MemoryDetailPage() {
   const candyImage = CANDY_IMAGE_BY_COLOR[memory.candyColor];
 
   return (
-    <div className="flex h-full flex-col bg-main px-4 pb-[88px] pt-4">
+    <div className="flex h-full flex-col bg-main px-4 pt-4">
       {/* 메인 카드 */}
       <div className="relative flex-1 rounded-[20px] bg-[#FFF8F6] p-4 shadow-sm">
         {/* 날짜 탭 */}
