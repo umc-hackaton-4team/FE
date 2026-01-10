@@ -9,12 +9,10 @@ export const GoogleLoginButton = () => {
   return (
     <button
       onClick={handleLogin}
-      className="flex h-[60px] w-[398px] items-center justify-center gap-3 rounded-[12px] bg-white shadow-[0px_0px_8px_0px_rgba(0,0,0,0.15)]"
+      className="flex h-[60px] w-[398px] items-center justify-center gap-3 rounded-xl bg-white shadow-[0px_0px_8px_0px_rgba(0,0,0,0.15)]"
     >
       <img src={googleIcon} alt="Google" className="size-6" />
-      <span className="text-[16px] font-bold leading-[1.3] text-black">
-        Google 로그인
-      </span>
+      <span className="text-h4 text-gray-8">Google 로그인</span>
     </button>
   );
 };
