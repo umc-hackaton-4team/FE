@@ -1,30 +1,33 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
 import InactiveRecord from "../../assets/icons/graynote.svg";
-import ActiveRecord from "../../assets/icons/graynote.svg";
+import ActiveRecord from "../../assets/icons/graynote.svg"; // TODO: orangenote.svg 추가 필요
 
 import InactivePickBox from "../../assets/icons/graybox.svg";
-import ActivePickBox from "../../assets/icons/graybox.svg";
+import ActivePickBox from "../../assets/icons/orangebox.svg";
 
-import InactivePen from "../../assets/icons/orangepen.svg";
+import InactivePen from "../../assets/icons/graypen.svg";
 import ActivePen from "../../assets/icons/orangepen.svg";
 
 const navItems = [
   {
     label: "기록하기",
-    path: "/record",
+    path: "/",
+    activePaths: ["/"],
     ActiveIcon: ActivePen,
     InactiveIcon: InactivePen,
   },
   {
     label: "할 일 뽑기",
     path: "/pick",
+    activePaths: ["/pick"],
     ActiveIcon: ActivePickBox,
     InactiveIcon: InactivePickBox,
   },
   {
     label: "지난 일기",
     path: "/archive",
+    activePaths: ["/archive"],
     ActiveIcon: ActiveRecord,
     InactiveIcon: InactiveRecord,
   },
@@ -37,8 +40,11 @@ export default function FooterBar() {
   return (
     <nav className="fixed bottom-0 left-1/2 z-50 w-full max-w-[430px] -translate-x-1/2 border-t bg-white">
       <ul className="flex h-16">
-        {navItems.map(({ label, path, ActiveIcon, InactiveIcon }) => {
-          const isActive = location.pathname.startsWith(path);
+        {navItems.map(({ label, path, activePaths, ActiveIcon, InactiveIcon }) => {
+           const isActive = activePaths.some((activePath) =>
+          location.pathname.startsWith(activePath)
+        );
+
           const iconSrc = isActive ? ActiveIcon : InactiveIcon;
 
           return (
