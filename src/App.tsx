@@ -11,10 +11,11 @@ const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
 const SuccessPage = lazy(() => import("./pages/HomePage/SuccessPage"));
 const AuthCallback = lazy(() => import("./pages/LoginPage/AuthCallback"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
-const Survey = lazy(() => import("./pages/PickPage/survey"));
-const Swipe = lazy(() => import("./pages/PickPage/swipe"));
+const Survey = lazy(() => import("./pages/PickPage/Survey"));
+const Swipe = lazy(() => import("./pages/PickPage/Swipe"));
 const PickLoadingPage = lazy(() => import("./pages/PickPage/PickLoading"));
 const RecommendPage = lazy(() => import("./pages/RecommendPage/RecommendPage"));
+const AchievementPage = lazy(() => import("./pages/RecommendPage/AchievementPage"));
 const ArchivePage = lazy(() => import("./pages/ArchivePage/ArchivePage"));
 const MemoryDetailPage = lazy(() => import("./pages/ArchivePage/MemoryDetailPage"));
 
@@ -37,6 +38,7 @@ function App() {
               <Route path="/pick" element={<Survey />} />
               <Route path="/pick/swipe" element={<Swipe />} />
               <Route path="/pick/result" element={<RecommendPage />} />
+              <Route path="/pick/achievement" element={<AchievementPage />} />
               <Route path="/archive" element={<ArchivePage />} />
               <Route path="/archive/:memoryId" element={<MemoryDetailPage />} />
             </Route>

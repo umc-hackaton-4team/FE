@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
 import Calendar from "./Calendar";
 import type { Memory } from "../../types/memory";
 import type { CandyColor } from "../../constants/candy";
@@ -55,7 +56,7 @@ export default function ArchivePage() {
       try {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;
-        const response = await api.get<ApiResponse<Memory[]>>(`/memories?year=${year}&month=${month}`);
+        const response = await api.get<ApiResponse<Memory[]>>(`${API_ENDPOINTS.MEMORIES.BASE}?year=${year}&month=${month}`);
         setMemories(response.data.data || []);
       } catch (error) {
         console.error("Failed to fetch memories:", error);

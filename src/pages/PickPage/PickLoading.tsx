@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
+import { API_ENDPOINTS } from "../../api/endpoints";
 import Slot from "../../assets/icons/slot.svg";
 import type { User } from "../../types/user";
 import type { ApiResponse } from "../../types/api";
@@ -10,7 +11,7 @@ export default function PickLoadingPage() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    api.get<ApiResponse<User>>("/users/me").then((res) => {
+    api.get<ApiResponse<User>>(API_ENDPOINTS.USERS.ME).then((res) => {
       setUser(res.data.data);
     });
 
