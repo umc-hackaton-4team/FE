@@ -91,13 +91,11 @@ export default function HomePage() {
     setIsSubmitting(true);
     try {
       const formData = new FormData();
+      // request를 FormData body에 추가 (쿼리파라미터가 아님)
+      formData.append("request", JSON.stringify({ content, candyColor: selectedColor }));
       images.forEach((img) => formData.append("images", img));
 
-      const query = encodeURIComponent(
-        JSON.stringify({ content, candyColor: selectedColor })
-      );
-
-      await api.post(`${API_ENDPOINTS.MEMORIES.BASE}?request=${query}`, formData, {
+      await api.post(API_ENDPOINTS.MEMORIES.BASE, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

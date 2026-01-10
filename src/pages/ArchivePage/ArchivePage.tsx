@@ -49,14 +49,12 @@ export default function ArchivePage() {
     return memoriesByDate[dateKey] || [];
   }, [selectedDate, memoriesByDate]);
 
-  // 메모리 목록 가져오기
+  // 메모리 목록 가져오기 (백엔드가 전체 목록만 반환, 프론트에서 필터링)
   useEffect(() => {
     const fetchMemories = async () => {
       setLoading(true);
       try {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
-        const response = await api.get<ApiResponse<Memory[]>>(`${API_ENDPOINTS.MEMORIES.BASE}?year=${year}&month=${month}`);
+        const response = await api.get<ApiResponse<Memory[]>>(API_ENDPOINTS.MEMORIES.BASE);
         setMemories(response.data.data || []);
       } catch (error) {
         console.error("Failed to fetch memories:", error);
@@ -67,7 +65,7 @@ export default function ArchivePage() {
     };
 
     fetchMemories();
-  }, [currentDate]);
+  }, []); // 최초 1회만 로드
 
   const handlePrevMonth = () => {
     setCurrentDate(
