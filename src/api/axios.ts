@@ -2,8 +2,7 @@
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "https://goodgame.snowfrost.kr/api";
+const API_BASE_URL = "https://goodgame.snowfrost.kr/api";
 
 // 1. Axios 인스턴스 생성
 export const api = axios.create({

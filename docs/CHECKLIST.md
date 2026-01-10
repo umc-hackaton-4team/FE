@@ -111,7 +111,6 @@
 
 ### 배포
 - [x] Vercel 배포 완료 (https://goodgame-fe.snowfrost.kr)
-- [x] 환경변수 분리 (.env.example 생성)
 - [x] HTTPS 적용
 
 ### TypeScript
@@ -138,7 +137,7 @@
 - [x] 프로젝트 초기 세팅 (React + TS + Vite)
 - [x] Tailwind CSS 4 설정
 - [x] Zustand 상태 관리
-- [x] Axios 인스턴스 설정 (환경변수 사용)
+- [x] Axios 인스턴스 설정
 - [x] ESLint/Prettier 설정
 - [x] 기본 폴더 구조
 - [x] Layout 컴포넌트 (Header, Footer)
@@ -146,7 +145,6 @@
 - [x] Vercel 배포
 - [x] 디자인 시스템 (컬러, 타이포그래피)
 - [x] 공용 컴포넌트 (Button, Input, Skeleton, Spinner, ErrorBoundary)
-- [x] .env.example 생성
 - [x] Pretendard 폰트 적용
 
 ### 진행 필요
