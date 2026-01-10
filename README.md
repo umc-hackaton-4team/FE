@@ -1,117 +1,69 @@
-# GoodGame Frontend
+<img alt="Image" src="https://github.com/user-attachments/assets/7e8885e2-0bed-43d1-83c8-353774a145a8" />
 
-UMC 해커톤 4팀 프론트엔드 프로젝트
+<br>
 
-## 기술 스택
+# 🍬 BONBON
 
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS
-- Zustand
-- React Router DOM
+BONBON은 일상의 소소한 행복을 '사탕'이라는 오브젝트로 시각화하여 기록하고, 개인의 상태에 맞는 행복 미션을 추천받을 수 있는 행복 아카이빙 웹 서비스입니다. <br>
+사용자는 직관적인 UI를 통해 자신의 감정을 기록하며, 캘린더를 통해 모아진 행복 사탕들을 한눈에 확인할 수 있습니다.
 
-## 시작하기
-
-```bash
-# 의존성 설치
-pnpm install
-
-# 개발 서버 실행
-pnpm dev
-
-# 빌드
-pnpm build
-
-# 린트
-pnpm lint
-
-# 포맷팅
-pnpm format
+## 📂 폴더 구조 (Directory Structure)
+```
+src
+├── 📂 api           # Axios 인스턴스 및 API 호출 함수 모음
+├── 📂 assets        # 이미지, 폰트, 아이콘 리소스
+├── 📂 components    # 재사용 가능한 공통 컴포넌트 (Button, Input 등)
+├── 📂 hooks         # 커스텀 훅 (useUser, useDebounce 등)
+├── 📂 pages         # 라우팅 단위의 페이지 컴포넌트
+├── 📂 types         # TypeScript 타입 정의 인터페이스
+├── 📂 utils         # 날짜 변환 등 공통 유틸리티 함수
+├── App.tsx          # 라우팅 및 전역 설정
+└── main.tsx         # 진입점
 ```
 
-## 배포
+## 🔐 보안 및 인증 처리
+JWT 핸들링
+Axios Interceptor를 설정하여 모든 API 요청 헤더에 자동으로 Access Token을 주입합니다.
 
-- **URL**: https://goodgame-fe.snowfrost.kr
-- **플랫폼**: Vercel
-- **브랜치**: main
+토큰 만료 시 Refresh Token을 사용해 자동으로 재발급받는 로직을 구현하여 끊김 없는 사용자 경험을 제공합니다.
 
----
+justand 활용하여 토큰을 안전하게 관리합니다.
 
-# Git 협업 규칙
 
-## 1. 커밋 유형 (Commit Type)
+## 🛠️ 기술 스택
 
-커밋은 다음과 같이 분류하여 메시지를 작성한다.
+| 구분 | 기술 |
+|------|------|
+| Core | <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" height="25"> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" height="25"> |
+| Build | <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" height="25"> |
+| Styling | <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" height="25"> |
+| Network | <img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white" height="25"> |
+| Global State | <img src="https://img.shields.io/badge/Zustand-543818?style=flat-square&logo=react&logoColor=white" height="25"> |
+| Auth | <img src="https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white" height="25"> |
 
-- **feat** : 기능 개발
-- **fix** : 버그 수정
-- **style** : UI 스타일 수정 (CSS, Tailwind class, 디자인 토큰 값 변경 등 **기능 변경 없음**)
-- **docs** : 문서 작업 (주로 `main`에서 `README.md` 작성)
-- **refactor** : 리팩토링 (**기능 변경 없이** 구조/설계 개선, 함수 추출, 클래스 구조 변경 등)
-- **chore** : 설정 변경, 파일 이동/이름 변경, 주석 추가 등 빌드/기능에 영향 없는 작업
+# 🔄 개발 워크플로우
 
----
+## 🌿 브랜치 전략
 
-## 2. 커밋 메시지 작성 규칙
+Git Flow를 기반으로 하며, 다음과 같은 브랜치 형식을 따릅니다.
 
-커밋 메시지는 다음과 같은 형태로 작성한다. (띄어쓰기 및 형식 준수)
+- **Main Branch**
+  - 배포 가능한 상태의 코드를 유지합니다.
+  - 이 브랜치에 push 되면 vercel로 자동 배포(CD)가 진행됩니다.
+- **Dev**
+  개발 중인 버전 (Main Merge 전 단계)
+	
+- **feature/#이슈번호-기능명 : 신규 기능 개발 브랜치**
+  - dev 브랜치에서 분기되어 기능 단위로 개발
+  - 개발 완료 후 dev로 병합
+  - 브랜치명은 kebab-case 사용
+	- 예) feature/#1-get-user
 
-### 규칙
-- 커밋 유형은 **반드시 영문 소문자**로 작성한다.
-- 커밋 메시지는 **기본적으로 한글**로 작성하되, 라이브러리명/기술 용어/에러 메시지는 **영어 사용을 허용**한다.
-- 필요 시 커밋 메시지 가장 앞에 **이슈 번호를 추가**한다.
-- 커밋은 “논리적으로 독립적인 작업” 단위로 작성한다.
-  - 독립적으로 **빌드 및 테스트가 가능**한 단위
-  - 롤백 시 **최소한의 영향을 주는** 단위
 
-### 예시
-- `[#12] feat : 로그인 페이지 UI 구현`
-- `[#8] fix : 회원가입 시 상태 코드 오류 수정`
-- `[#3] chore : ESLint/Prettier 설정 추가`
+# 👥 팀원 및 팀 소개
 
----
-
-## 3. 브랜치 전략 (Branch Strategy)
-
-### main : 배포용 브랜치
-- 실제 서비스에 배포되는 코드만 포함
-- 직접 개발하지 않고 `dev` 또는 `fix` 등의 브랜치를 이용하여 병합하여 사용
-
-### dev : 개발 통합 브랜치
-- `main` 브랜치에서 분기
-- 여러 기능이 개발되고 통합되는 브랜치
-- `feature` 브랜치에서 작업한 기능들을 이 곳으로 병합
-- 충분히 테스트한 후 `main`으로 배포
-
-### feature/#이슈번호-기능명 : 신규 기능 개발 브랜치
-- `dev` 브랜치에서 분기되어 기능 단위로 개발
-- 개발 완료 후 `dev`로 병합
-- 브랜치명은 `kebab-case` 사용  
-  - 예) `feature/#1-get-user`
-
-### fix/#이슈번호-기능명 : 버그 수정용 브랜치
-- `dev` 또는 `main`에서 분기하여 버그 수정
-- `dev`에서 분기 : 개발 중 발견된 버그 수정
-- 기능 구현에 대한 버그 수정 시, 반드시 해당 기능 브랜치가 `dev`와 병합되어 있는지 확인 후 수정 진행
-- 수정 완료 후 `dev`로 병합
-
-예시) 회원가입 시 발생하는 오류의 상태 코드를 변경하고 싶음
-1) `feature/#1-signup` 브랜치가 `dev`와 병합되어 있는지 확인  
-2) `dev`에서 `fix/#2-status-code-error` 생성하여 버그 수정  
-3) 이후 `dev`와 병합
-
-### hotfix/#이슈번호-기능명 : 긴급 수정 브랜치
-- 운영 환경(`main`)에서 발생한 긴급 버그 수정
-- `main`에서 분기하여 수정 후 **`main`과 `dev`에 모두 병합**
-
----
-
-## 4. 브랜치 규칙 (Branching Rule)
-
-- 기능 개발은 반드시 `feature` 브랜치에서 개발한다.
-- 개발 완료 시 `dev` 브랜치로 합병한다.
-- 브랜치명은 `kebab-case`를 사용한다.  
-  - 예) `feature/#1-get-user`
-- 모든 QA 및 버그 수정 완료 시 `main`으로 병합한다.
-- 긴급 수정은 `hotfix` 브랜치에서 진행 후 `main`과 `dev`에 병합한다.
+| [왕휘도] | [최지우] | [김덕환] |
+|:------:|:------:|:------:|
+| <img src="https://avatars.githubusercontent.com/kingluminance" width="100px;" alt="kingluminance"/> | <img src="https://avatars.githubusercontent.com/Choijiw00" width="100px;" alt="Choijiw00"/> | <img src="https://avatars.githubusercontent.com/IISweetHeartII" width="100px;" alt="IISweetHeartII"/> |
+| FE | FE | FE |
+| [GitHub](https://github.com/kingluminance) | [GitHub](https://github.com/Choijiw00) | [GitHub](https://github.com/IISweetHeartII) |
