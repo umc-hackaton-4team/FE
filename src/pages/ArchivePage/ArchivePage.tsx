@@ -121,8 +121,8 @@ export default function ArchivePage() {
             ) : selectedDateMemories.length > 0 ? (
               selectedDateMemories.map((memory) => (
                 <button
-                  key={memory.id}
-                  onClick={() => handleMemoryClick(memory.id)}
+                  key={memory.memoryId}
+                  onClick={() => handleMemoryClick(memory.memoryId)}
                   className="flex w-full items-center gap-4 rounded-xl bg-white p-4 shadow-md transition hover:shadow-lg"
                 >
                   {/* 사탕 아이콘 */}

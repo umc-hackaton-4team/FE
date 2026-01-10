@@ -1,11 +1,11 @@
 export type CandyColor = "YELLOW" | "ORANGE" | "PINK" | "GREEN" | "MINT";
 
 export interface Memory {
-  id: number;
+  memoryId: number;
   content: string;
   candyColor: CandyColor;
   createdAt: string;
-  images?: string[];
+  imageUrls?: string[];
 }
 
 export interface MemoryResponse {
