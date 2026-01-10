@@ -1,15 +1,22 @@
-// src/store/authStore.ts
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  profileImage: string;
+}
 
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
+  user: User | null;
   isAuthenticated: boolean;
   login: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
-  // ✅ 추가: 액세스 토큰만 갱신하는 함수
   setAccessToken: (accessToken: string) => void;
+  setUser: (user: User) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -17,6 +24,7 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       accessToken: null,
       refreshToken: null,
+      user: null,
       isAuthenticated: false,
 
       login: (accessToken, refreshToken) =>
@@ -30,11 +38,13 @@ export const useAuthStore = create<AuthState>()(
         set({
           accessToken: null,
           refreshToken: null,
+          user: null,
           isAuthenticated: false,
         }),
 
-      // ✅ 구현
       setAccessToken: (accessToken) => set({ accessToken }),
+
+      setUser: (user) => set({ user }),
     }),
     {
       name: "auth-storage",
