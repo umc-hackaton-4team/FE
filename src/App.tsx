@@ -1,6 +1,5 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages/HomePage/HomePage";
 /*import Survey from "./pages/pick/survey";
 import Swipe from "./pages/pick/swipe";
@@ -11,6 +10,7 @@ import IconCalendar from "./pages/archive/iconCalendar";
 import RecordList from "./pages/archive/recordList";
 import DetailPopup from "./pages/archive/detailPopup";*/
 import AuthCallback from "./pages/LoginPage/AuthCallback";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 function App() {
   return (
