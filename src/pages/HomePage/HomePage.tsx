@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import type { User } from "../../types/user";
+import { toast } from "../../store/toastStore";
+import imageCompression from "browser-image-compression";
 
 const COLORS = [
   { name: "YELLOW", className: "bg-[#FFD588]" },
@@ -16,6 +19,7 @@ export default function HomePage() {
   const [selectedColor, setSelectedColor] = useState("YELLOW");
   const [images, setImages] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   const today = new Date();
   const dateText = `${today.getMonth() + 1} / ${today.getDate()} ${
@@ -28,49 +32,65 @@ export default function HomePage() {
     });
   }, []);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    setImages((prev) => [...prev, ...Array.from(files)].slice(0, 4));
+    const compressedFiles: File[] = [];
+    for (let i = 0; i < files.length; i++) {
+      try {
+        const compressed = await imageCompression(files[i], {
+          maxSizeMB: 0.5, 
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        });
+        compressedFiles.push(compressed);
+      } catch (err) {
+        console.error("이미지 압축 실패:", err);
+      }
+    }
 
+    if (compressedFiles.length + images.length > 4) {
+      toast.warning("이미지는 최대 4장까지 업로드 가능합니다!");
+    }
+
+    setImages((prev) =>
+      [...prev, ...compressedFiles].slice(0, 4)
+    );
     e.target.value = "";
   };
 
   const handleSubmit = async () => {
+    if (!content.trim()) {
+      toast.warning("내용을 입력해주세요!");
+      return;
+    }
+
     try {
       const formData = new FormData();
-
-      formData.append(
-        "request",
-        new Blob(
-          [
-            JSON.stringify({
-              content,
-              candyColor: selectedColor,
-            }),
-          ],
-          { type: "application/json" }
-        )
-      );
-
       images.forEach((img) => formData.append("images", img));
 
-      await api.post("/memories", formData, {
+      const query = encodeURIComponent(
+        JSON.stringify({ content, candyColor: selectedColor })
+      );
+
+      await api.post(`/api/memories?request=${query}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      alert("기록이 저장되었어요 🌱");
+      toast.success("기록이 저장되었어요 🌱");
       setContent("");
       setImages([]);
-    } catch {
-      alert("이미 오늘 기록을 작성했어요!");
+
+      navigate("/todaycandy");
+    } catch (err) {
+      console.error(err);
+      toast.error("이미 오늘 기록을 작성했거나 서버 오류가 발생했어요!");
     }
   };
 
   return (
     <div className="flex h-full flex-col bg-[#FFFCF7] px-4 pb-[88px] pt-4">
-      {/* 인사 */}
       <section>
         <p className="text-lg font-bold">
           안녕하세요, {user?.name ?? "User"} 님!
@@ -78,18 +98,15 @@ export default function HomePage() {
         <p className="text-lg font-bold">오늘은 어떤 행복이 있었나요?</p>
       </section>
 
-      {/* 날짜 */}
       <div className="mt-3 inline-block w-fit rounded-full bg-white px-3 py-1 text-xs shadow">
         {dateText}
       </div>
 
-      {/* 카드 */}
       <section className="mt-4 flex flex-1 flex-col rounded-2xl bg-white p-4 shadow">
         <p className="mb-3 text-sm font-semibold">
           어떤 색의 사탕을 만들어 볼까요?
         </p>
 
-        {/* 색상 */}
         <div className="mb-4 flex gap-3">
           {COLORS.map((c) => (
             <button
@@ -102,7 +119,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* textarea */}
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -110,7 +126,6 @@ export default function HomePage() {
           className="flex-1 resize-none rounded-2xl border border-gray-200 p-4 text-sm focus:outline-none"
         />
 
-        {/* 이미지 */}
         <div className="mt-4">
           <input
             ref={fileInputRef}
@@ -147,7 +162,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 저장 버튼 */}
       <button
         onClick={handleSubmit}
         className="mt-4 rounded-xl bg-[#FF7A7A] py-4 font-semibold text-white"

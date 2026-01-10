@@ -1,6 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
+import SuccessPage from "./pages/HomePage/SuccessPage";
 import AuthCallback from "./pages/LoginPage/AuthCallback";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Layout from "./components/Layout/Layout";
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/todaycandy" element={<SuccessPage />} />
           <Route path="/pick" element={<Survey />} />
           <Route path="/pick/swipe" element={<Swipe />} />
           <Route path="/pick/result" element={<RecommendPage />} />
