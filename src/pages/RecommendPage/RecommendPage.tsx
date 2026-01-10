@@ -1,9 +1,10 @@
 // src/pages/RecommendPage.tsx
 import { useRecommendations } from "../../hooks/useRecommendations";
-import { useUser } from "../../hooks/useUser"; // ✨ 1. 훅 import
+import { useUser } from "../../hooks/useUser";
 import { BrowsingView } from "./BrowsingView";
 import { ConfirmedView } from "./ConfirmedView";
 import { FinishedView } from "./FinishedView";
+import { Spinner } from "../../components/common/Spinner";
 
 export default function RecommendPage() {
   // 추천 관련 로직
@@ -21,7 +22,14 @@ export default function RecommendPage() {
   // ✨ 2. 유저 정보 불러오기
   const { user } = useUser();
 
-  if (recLoading) return <div className="p-10 text-center">불러오는 중...</div>;
+  if (recLoading) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center bg-main">
+        <Spinner size="lg" />
+        <p className="mt-4 text-body2 text-gray-6">추천 미션을 불러오는 중...</p>
+      </div>
+    );
+  }
 
   // Case 1: 확정된 상태 (오른쪽 화면)
   if (confirmedItem) {
