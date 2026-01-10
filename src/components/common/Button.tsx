@@ -10,7 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
 }
 
-const variantStyles: Record<ButtonVariant, string> = {
+const VARIANT_STYLES: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-white hover:opacity-90 active:opacity-80 disabled:bg-gray-4",
   secondary:
@@ -21,7 +21,7 @@ const variantStyles: Record<ButtonVariant, string> = {
     "text-gray-7 hover:bg-gray-2 active:bg-gray-3 disabled:text-gray-5",
 };
 
-const sizeStyles: Record<ButtonSize, string> = {
+const SIZE_STYLES: Record<ButtonSize, string> = {
   sm: "px-3 py-1.5 text-sm rounded-md",
   md: "px-4 py-2 text-base rounded-lg",
   lg: "px-6 py-3 text-lg rounded-xl",
@@ -50,8 +50,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           transition-colors duration-200
           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
           disabled:cursor-not-allowed
-          ${variantStyles[variant]}
-          ${sizeStyles[size]}
+          ${VARIANT_STYLES[variant]}
+          ${SIZE_STYLES[size]}
           ${fullWidth ? "w-full" : ""}
           ${className}
         `}

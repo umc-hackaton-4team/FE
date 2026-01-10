@@ -3,7 +3,7 @@ interface SpinnerProps {
   className?: string;
 }
 
-const sizeStyles = {
+const SIZE_STYLES = {
   sm: "h-4 w-4",
   md: "h-6 w-6",
   lg: "h-8 w-8",
@@ -12,7 +12,7 @@ const sizeStyles = {
 export function Spinner({ size = "md", className = "" }: SpinnerProps) {
   return (
     <svg
-      className={`animate-spin text-primary ${sizeStyles[size]} ${className}`}
+      className={`animate-spin text-primary ${SIZE_STYLES[size]} ${className}`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
