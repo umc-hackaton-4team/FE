@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../api/axios";
-import type { Memory, CandyColor } from "../../types/memory";
+import type { Memory } from "../../types/memory";
+import type { CandyColor } from "../../constants/candy";
+import type { ApiResponse } from "../../types/api";
 
 // 사탕 색상별 SVG 아이콘
 import CandyYellow from "../../assets/icons/candy-yellow.svg";
 import CandyOrange from "../../assets/icons/candy-orange.svg";
 import CandyPink from "../../assets/icons/candy-pink.svg";
 import CandyGreen from "../../assets/icons/candy-green.svg";
-import CandyMint from "../../assets/icons/candy-mint.svg";
+import CandyBlue from "../../assets/icons/candy-blue.svg";
 
-const CANDY_IMAGE_BY_COLOR: Record<CandyColor, string> = {
+const CANDY_IMAGE_BY_COLOR: Partial<Record<CandyColor, string>> = {
   YELLOW: CandyYellow,
   ORANGE: CandyOrange,
   PINK: CandyPink,
   GREEN: CandyGreen,
-  MINT: CandyMint,
+  BLUE: CandyBlue,
 };
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
@@ -30,7 +32,7 @@ export default function MemoryDetailPage() {
     const fetchMemory = async () => {
       if (!memoryId) return;
       try {
-        const response = await api.get(`/memories/${memoryId}`);
+        const response = await api.get<ApiResponse<Memory>>(`/memories/${memoryId}`);
         setMemory(response.data.data);
       } catch (error) {
         console.error("Failed to fetch memory:", error);

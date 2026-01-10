@@ -1,25 +1,21 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/axios";
-
-interface User {
-  id: number;
-  email: string;
-  name: string;
-  profileImage: string;
-}
+import type { User } from "../types/user";
+import type { ApiResponse } from "../types/api";
 
 export const useUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await api.get("/users/me");
-        // 응답 구조: { success: true, data: { name: "홍길동", ... } }
+        const res = await api.get<ApiResponse<User>>("/users/me");
         setUser(res.data.data);
       } catch (err) {
         console.error("유저 정보 불러오기 실패:", err);
+        setError("유저 정보를 불러오는데 실패했습니다.");
       } finally {
         setLoading(false);
       }
@@ -27,5 +23,5 @@ export const useUser = () => {
     fetchUser();
   }, []);
 
-  return { user, loading };
+  return { user, loading, error };
 };

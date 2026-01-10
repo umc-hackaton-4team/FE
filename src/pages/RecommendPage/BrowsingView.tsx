@@ -1,7 +1,7 @@
 // src/pages/recommend/components/BrowsingView.tsx
 import RecommendationBox from "./RecommendationBox";
 import ReviewButton from "./ReviewButton";
-import type { Recommendation } from "../../hooks/useRecommendations";
+import type { Recommendation } from "../../types/recommendation";
 
 interface Props {
   item: Recommendation;

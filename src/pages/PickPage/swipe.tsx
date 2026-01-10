@@ -3,28 +3,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { useToastStore } from "../../store/toastStore";
 import { Spinner } from "../../components/common/Spinner";
-
-type ConditionForm = {
-  energyLevel: "LOW" | "NORMAL" | "HIGH";
-  availableTime: "SHORT" | "MODERATE" | "LONG";
-  spendingLevel: "NONE" | "LIGHT" | "HEAVY";
-  activityLocation: "INSIDE" | "OUTSIDE" | "ANY";
-  description: string;
-};
-
-type User = {
-  id: number;
-  email: string;
-  name: string;
-  profileImage: string;
-};
+import type { User } from "../../types/user";
+import type { DailyConditionRequest } from "../../types/dailyCondition";
+import type { ApiResponse } from "../../types/api";
 
 export default function SwipePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { addToast } = useToastStore();
 
-  const surveyData = location.state as Omit<ConditionForm, "description"> | undefined;
+  const surveyData = location.state as Omit<DailyConditionRequest, "description"> | undefined;
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -40,7 +28,7 @@ export default function SwipePage() {
   // 로그인한 사용자 정보 가져오기
   useEffect(() => {
     api
-      .get("/users/me")
+      .get<ApiResponse<User>>("/users/me")
       .then((res) => setUser(res.data.data))
       .catch((err) => {
         console.error(err);
@@ -53,7 +41,7 @@ export default function SwipePage() {
 
     setLoading(true);
 
-    const payload: ConditionForm = {
+    const payload: DailyConditionRequest = {
       ...surveyData,
       description,
     };
