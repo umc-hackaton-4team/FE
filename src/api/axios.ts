@@ -2,9 +2,12 @@
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "https://goodgame.snowfrost.kr/api";
+
 // 1. Axios 인스턴스 생성
 export const api = axios.create({
-  baseURL: "https://goodgame.snowfrost.kr/api", // 백엔드 기본 주소
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -44,12 +47,9 @@ api.interceptors.response.use(
 
         // B. 백엔드에 "토큰 갱신해줘" 요청 (엔드포인트 확인 필요!)
         // 보통 '/auth/refresh' 같은 주소를 씁니다.
-        const { data } = await axios.post(
-          "https://goodgame.snowfrost.kr/api/auth/refresh",
-          {
-            refreshToken: refreshToken,
-          }
-        );
+        const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+          refreshToken: refreshToken,
+        });
 
         // C. 새로 받은 액세스 토큰으로 갈아끼우기
         // (백엔드가 주는 구조에 따라 data.accessToken 접근 경로 확인)
