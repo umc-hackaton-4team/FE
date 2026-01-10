@@ -1,6 +1,7 @@
 // src/api/axios.ts
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
+import { API_ENDPOINTS } from "./endpoints";
 
 const API_BASE_URL = "https://goodgame.snowfrost.kr/api";
 
@@ -45,7 +46,7 @@ api.interceptors.response.use(
         }
 
         // B. 백엔드에 토큰 갱신 요청
-        const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+        const { data } = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`, {
           refreshToken: refreshToken,
         });
 

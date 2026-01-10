@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/axios";
+import { API_ENDPOINTS } from "../api/endpoints";
 import type { User } from "../types/user";
 import type { ApiResponse } from "../types/api";
 
@@ -11,7 +12,7 @@ export const useUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await api.get<ApiResponse<User>>("/users/me");
+        const res = await api.get<ApiResponse<User>>(API_ENDPOINTS.USERS.ME);
         setUser(res.data.data);
       } catch (err) {
         console.error("유저 정보 불러오기 실패:", err);
