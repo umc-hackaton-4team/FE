@@ -1,3 +1,43 @@
+# GoodGame Frontend
+
+UMC 해커톤 4팀 프론트엔드 프로젝트
+
+## 기술 스택
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- Zustand
+- React Router DOM
+
+## 시작하기
+
+```bash
+# 의존성 설치
+pnpm install
+
+# 개발 서버 실행
+pnpm dev
+
+# 빌드
+pnpm build
+
+# 린트
+pnpm lint
+
+# 포맷팅
+pnpm format
+```
+
+## 배포
+
+- **URL**: https://goodgame-fe.snowfrost.kr
+- **플랫폼**: Vercel
+- **브랜치**: main
+
+---
+
 # Git 협업 규칙
 
 ## 1. 커밋 유형 (Commit Type)

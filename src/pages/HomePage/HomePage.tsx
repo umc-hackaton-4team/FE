@@ -1,179 +1,159 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-
+import { api } from "../../api/axios";
 import type { User } from "../../types/user";
-import type { DailyConditionRequest } from "../../types/dailyCondition";
-import FooterBar from "../../components/Layout/Footer";
 
 const COLORS = [
-  { name: "red", className: "bg-red-300" },
-  { name: "orange", className: "bg-orange-300" },
-  { name: "yellow", className: "bg-yellow-200" },
-  { name: "green", className: "bg-green-300" },
-  { name: "blue", className: "bg-blue-300" },
+  { name: "YELLOW", className: "bg-[#FFD588]" },
+  { name: "ORANGE", className: "bg-[#FFA15D]" },
+  { name: "PINK", className: "bg-[#FFBACB]" },
+  { name: "GREEN", className: "bg-[#C9E893]" },
+  { name: "MINT", className: "bg-[#9FEAE0]" },
 ];
 
-export default function RecordPage() {
+export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
-  const [selectedColor, setSelectedColor] = useState<string>("red");
+  const [content, setContent] = useState("");
+  const [selectedColor, setSelectedColor] = useState("YELLOW");
   const [images, setImages] = useState<File[]>([]);
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const [form, setForm] = useState<DailyConditionRequest>({
-    energyLevel: "NORMAL",
-    availableTime: "MODERATE",
-    spendingLevel: "LIGHT",
-    activityLocation: "OUTSIDE",
-    description: "",
-  });
 
   const today = new Date();
   const dateText = `${today.getMonth() + 1} / ${today.getDate()} ${
     ["일", "월", "화", "수", "목", "금", "토"][today.getDay()]
   }요일`;
 
-  /* 유저 정보 조회 */
   useEffect(() => {
-    axios.get("https://goodgame.snowfrost.kr/api/users/me").then((res) => {
+    api.get("/users/me").then((res) => {
       setUser(res.data.data);
     });
   }, []);
 
-  /* 이미지 선택 */
-  const handleImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (!e.target.files) return;
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
 
-    const selectedFiles = Array.from(e.target.files);
-    const merged = [...images, ...selectedFiles].slice(0, 4);
+    setImages((prev) => [...prev, ...Array.from(files)].slice(0, 4));
 
-    setImages(merged);
     e.target.value = "";
   };
 
-  /* 저장 */
   const handleSubmit = async () => {
     try {
-      await axios.post("", form);
-      alert("오늘 기록이 저장되었어요 🌱");
+      const formData = new FormData();
+
+      formData.append(
+        "request",
+        new Blob(
+          [
+            JSON.stringify({
+              content,
+              candyColor: selectedColor,
+            }),
+          ],
+          { type: "application/json" }
+        )
+      );
+
+      images.forEach((img) => formData.append("images", img));
+
+      await api.post("/memories", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      alert("기록이 저장되었어요 🌱");
+      setContent("");
+      setImages([]);
     } catch {
       alert("이미 오늘 기록을 작성했어요!");
     }
   };
 
   return (
-    <div className="relative mx-auto min-h-screen max-w-[430px] bg-[#FFF8F6]">
-      <main className="mx-auto w-full max-w-[430px] px-5 pb-24">
-        {/* 인사 */}
-        <section className="pt-6">
-          <p className="text-lg font-semibold">
-            안녕하세요, {user?.name ?? "User"} 님!
-          </p>
-          <p className="text-lg font-semibold">
-            오늘은 어떤 행복이 있었나요?
-          </p>
-        </section>
+    <div className="flex h-full flex-col bg-[#FFFCF7] px-4 pb-[88px] pt-4">
+      {/* 인사 */}
+      <section>
+        <p className="text-lg font-bold">
+          안녕하세요, {user?.name ?? "User"} 님!
+        </p>
+        <p className="text-lg font-bold">오늘은 어떤 행복이 있었나요?</p>
+      </section>
 
-        {/* 컬러 선택 */}
-        <section className="mt-6">
-          <p className="mb-3 text-sm font-semibold">
-            오늘은 어떤 색으로 기록을 꾸며볼까요?
-          </p>
+      {/* 날짜 */}
+      <div className="mt-3 inline-block w-fit rounded-full bg-white px-3 py-1 text-xs shadow">
+        {dateText}
+      </div>
 
-          <div className="flex gap-3">
-            {COLORS.map((color) => (
-              <button
-                key={color.name}
-                onClick={() => setSelectedColor(color.name)}
-                className={`h-10 w-10 rounded-full ${color.className} ${
-                  selectedColor === color.name
-                    ? "ring-2 ring-black"
-                    : ""
-                }`}
-              />
-            ))}
-          </div>
-        </section>
+      {/* 카드 */}
+      <section className="mt-4 flex flex-1 flex-col rounded-2xl bg-white p-4 shadow">
+        <p className="mb-3 text-sm font-semibold">
+          어떤 색의 사탕을 만들어 볼까요?
+        </p>
 
-        {/* 기록 카드 */}
-        <section className="mt-4 rounded-2xl bg-white p-4 shadow">
-          <p className="mb-2 text-sm font-medium">{dateText}</p>
+        {/* 색상 */}
+        <div className="mb-4 flex gap-3">
+          {COLORS.map((c) => (
+            <button
+              key={c.name}
+              onClick={() => setSelectedColor(c.name)}
+              className={`h-8 w-8 rounded-full ${c.className} ${
+                selectedColor === c.name ? "ring-2 ring-black" : ""
+              }`}
+            />
+          ))}
+        </div>
 
-          <textarea
-            placeholder="오늘 있었던 행복한 일을 기록해보세요!"
-            value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
-            className="h-40 w-full resize-none rounded-lg border p-3 text-sm focus:outline-none"
+        {/* textarea */}
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="이번 기록은 분명 멋진 재료가 될 거예요!"
+          className="flex-1 resize-none rounded-2xl border border-gray-200 p-4 text-sm focus:outline-none"
+        />
+
+        {/* 이미지 */}
+        <div className="mt-4">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            className="hidden"
           />
 
-          {/* 이미지 업로드 */}
-          <div className="mt-4">
-            <p className="mb-2 text-sm font-medium">
-              사진 추가 (최대 4장)
-            </p>
+          <div className="grid grid-cols-4 gap-3">
+            {images.map((file, idx) => (
+              <div
+                key={idx}
+                className="relative h-20 overflow-hidden rounded-xl border"
+              >
+                <img
+                  src={URL.createObjectURL(file)}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            ))}
 
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-              className="hidden"
-            />
-
-            <div className="grid grid-cols-4 gap-3">
-              {/* 미리보기 */}
-              {images.map((file, idx) => (
-                <div
-                  key={idx}
-                  className="relative h-20 w-full overflow-hidden rounded-xl"
-                >
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                  <button
-                    onClick={() =>
-                      setImages(images.filter((_, i) => i !== idx))
-                    }
-                    className="absolute right-1 top-1 rounded-full bg-black/60 px-1 text-xs text-white"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-
-              {/* 추가 버튼 */}
-              {images.length < 4 && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    fileInputRef.current?.click()
-                  }
-                  className="flex h-20 w-full items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white text-gray-400"
-                >
-                  <span className="text-2xl">＋</span>
-                </button>
-              )}
-            </div>
+            {images.length < 4 && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex h-20 items-center justify-center rounded-xl border text-gray-400"
+              >
+                +
+              </button>
+            )}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* 저장 버튼 */}
-        <button
-          onClick={handleSubmit}
-          className="mt-6 w-full rounded-xl bg-red-400 py-4 font-semibold text-white"
-        >
-          기록 저장하기
-        </button>
-      </main>
-
-      <FooterBar />
+      {/* 저장 버튼 */}
+      <button
+        onClick={handleSubmit}
+        className="mt-4 rounded-xl bg-[#FF7A7A] py-4 font-semibold text-white"
+      >
+        기록 저장하기
+      </button>
     </div>
   );
 }

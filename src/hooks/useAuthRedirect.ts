@@ -1,27 +1,46 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ 라우터 이동 기능 추가
+import { useNavigate } from "react-router-dom";
+import { api } from "../api/axios";
 import { useAuthStore } from "../store/authStore";
 
+interface UserResponse {
+  result: {
+    id: number;
+    email: string;
+    name: string;
+    profileImage: string;
+  };
+}
+
 export const useAuthRedirect = () => {
-  const login = useAuthStore((state) => state.login);
-  const navigate = useNavigate(); // ✅ 이동을 위해 추가
+  const { login, setUser } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
+    const handleAuth = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const accessToken = params.get("accessToken");
+      const refreshToken = params.get("refreshToken");
 
-    if (accessToken && refreshToken) {
-      // 1. 스토어에 토큰 저장
-      login(accessToken, refreshToken);
+      if (accessToken && refreshToken) {
+        // 1. 토큰 저장
+        login(accessToken, refreshToken);
 
-      // 2. 로그 확인
-      console.log("로그인 성공! 홈으로 이동합니다.");
+        try {
+          // 2. 사용자 정보 조회
+          const { data } = await api.get<UserResponse>("/users/me");
+          setUser(data.result);
+        } catch (error) {
+          console.error("사용자 정보 조회 실패:", error);
+        }
 
-      // 3. 홈('/')으로 이동하면서, 뒤로가기 못하게 기록 교체(replace: true)
-      navigate("/", { replace: true });
-    } else {
-      navigate("/login", { replace: true });
-    }
-  }, [login, navigate]);
+        // 3. 홈으로 이동
+        navigate("/", { replace: true });
+      } else {
+        navigate("/login", { replace: true });
+      }
+    };
+
+    handleAuth();
+  }, [login, setUser, navigate]);
 };
