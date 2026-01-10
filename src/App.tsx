@@ -5,6 +5,7 @@ import AuthCallback from "./pages/LoginPage/AuthCallback";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Layout from "../src/components/Layout/Layout";
 import Survey from "./pages/PickPage/survey";
+import RecommendPage from "./pages/RecommendPage/RecommendPage";
 
 /*import Swipe from "./pages/pick/swipe";
 import Result from "./pages/pick/result";
@@ -22,6 +23,7 @@ function App() {
         <Route path="/pick/" element={<Survey />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/pick/result" element={<RecommendPage />} />
         {/*
         <Route path="/pick/swipe" element={<Swipe />} />
         <Route path="/pick/result" element={<Result />} />
