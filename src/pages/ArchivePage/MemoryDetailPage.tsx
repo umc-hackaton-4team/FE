@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../api/axios";
 import type { Memory } from "../../types/memory";
 import type { CandyColor } from "../../constants/candy";
+import type { ApiResponse } from "../../types/api";
 
 // 사탕 색상별 SVG 아이콘
 import CandyYellow from "../../assets/icons/candy-yellow.svg";
@@ -31,7 +32,7 @@ export default function MemoryDetailPage() {
     const fetchMemory = async () => {
       if (!memoryId) return;
       try {
-        const response = await api.get(`/memories/${memoryId}`);
+        const response = await api.get<ApiResponse<Memory>>(`/memories/${memoryId}`);
         setMemory(response.data.data);
       } catch (error) {
         console.error("Failed to fetch memory:", error);

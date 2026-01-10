@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../../api/axios";
 import type { User } from "../../types/user";
+import type { ApiResponse } from "../../types/api";
 import { toast } from "../../store/toastStore";
 import imageCompression from "browser-image-compression";
 import { Spinner } from "../../components/common/Spinner";
+import { DemoDataModal } from "../../components/common/DemoDataModal";
 import { CANDY_COLORS, CANDY_COLOR_STYLES, type BasicCandyColor } from "../../constants/candy";
 
 export default function HomePage() {
@@ -14,8 +16,10 @@ export default function HomePage() {
   const [selectedColor, setSelectedColor] = useState<BasicCandyColor>("YELLOW");
   const [images, setImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const today = new Date();
   const dateText = `${today.getMonth() + 1} / ${today.getDate()} ${
@@ -25,7 +29,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await api.get("/users/me");
+        const res = await api.get<ApiResponse<User>>("/users/me");
         setUser(res.data.data);
       } catch (error) {
         console.error("사용자 정보 조회 실패:", error);
@@ -36,6 +40,16 @@ export default function HomePage() {
     };
     fetchUser();
   }, []);
+
+  // 로그인 직후 데모 데이터 모달 표시
+  useEffect(() => {
+    const state = location.state as { fromLogin?: boolean } | null;
+    if (state?.fromLogin) {
+      setShowDemoModal(true);
+      // state 초기화 (새로고침 시 모달 다시 안 뜨게)
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -101,6 +115,10 @@ export default function HomePage() {
 
   return (
     <div className="flex h-full flex-col bg-[#FFFCF7] px-4 pb-[88px] pt-4">
+      <DemoDataModal
+        isOpen={showDemoModal}
+        onClose={() => setShowDemoModal(false)}
+      />
       <section>
         <p className="text-lg font-bold">
           안녕하세요,{" "}

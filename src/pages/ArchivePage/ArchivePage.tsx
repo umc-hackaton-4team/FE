@@ -4,6 +4,7 @@ import { api } from "../../api/axios";
 import Calendar from "./Calendar";
 import type { Memory } from "../../types/memory";
 import type { CandyColor } from "../../constants/candy";
+import type { ApiResponse } from "../../types/api";
 
 // 사탕 색상별 SVG 아이콘
 import CandyYellow from "../../assets/icons/candy-yellow.svg";
@@ -54,7 +55,7 @@ export default function ArchivePage() {
       try {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;
-        const response = await api.get(`/memories?year=${year}&month=${month}`);
+        const response = await api.get<ApiResponse<Memory[]>>(`/memories?year=${year}&month=${month}`);
         setMemories(response.data.data || []);
       } catch (error) {
         console.error("Failed to fetch memories:", error);
