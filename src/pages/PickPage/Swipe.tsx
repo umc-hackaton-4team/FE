@@ -53,11 +53,16 @@ export default function SwipePage() {
       navigate("/pick/loading");
     } catch (err: unknown) {
       console.error(err);
-      console.log("Sending payload:", payload);
-      addToast(
-        "요청이 잘못되었어요!",
-        "error"
-      );
+
+      // 409 Conflict - 이미 오늘 condition을 제출함
+      const axiosError = err as { response?: { status?: number } };
+      if (axiosError.response?.status === 409) {
+        addToast("이미 오늘의 설문을 완료했어요! 추천 결과를 확인하세요.", "info");
+        navigate("/pick/result", { replace: true });
+        return;
+      }
+
+      addToast("요청이 잘못되었어요!", "error");
     } finally {
       setLoading(false);
     }
