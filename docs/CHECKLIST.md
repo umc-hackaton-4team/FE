@@ -21,7 +21,7 @@
 ### Hook 분리
 - [x] useAuth 훅 구현
 - [x] useAuthRedirect 훅 구현
-- [ ] API 요청 관련 커스텀 훅 (useFetch, useQuery 등)
+- [x] useApi 훅 구현 (axios 기반 API 요청 + 로딩/에러 상태)
 
 ---
 
@@ -34,8 +34,9 @@
 - [ ] Modal 컴포넌트
 - [x] Skeleton 컴포넌트
 - [x] Spinner 컴포넌트
-- [ ] Toast/Alert 컴포넌트
+- [x] Toast 컴포넌트 (Zustand 기반 전역 상태)
 - [x] ErrorBoundary 컴포넌트
+- [x] ProtectedRoute 컴포넌트 (로그인 필요 페이지 보호)
 
 ### 폴더 구조
 - [x] api/ - Axios 인스턴스
@@ -76,19 +77,20 @@
 ## 4. 성능 최적화 (20점)
 
 ### 중복 요청 방지
-- [ ] Debouncing 적용 (검색, 입력 등)
-- [ ] Throttling 적용 (스크롤 이벤트 등)
+- [x] useDebounce 훅 구현 (검색, 입력 최적화)
+- [x] useThrottle 훅 구현 (스크롤 이벤트 최적화)
 - [ ] API 응답 캐싱
 
 ### 리렌더링 최적화
-- [ ] useCallback 활용
+- [x] useCallback 활용 (useApi 훅에서 사용)
 - [ ] useMemo 활용
 - [ ] React.memo 활용
 
 ### 전역 상태 관리
 - [x] Zustand 설정
 - [x] 인증 상태 전역 관리 (useAuthStore)
-- [ ] 로그인 여부에 따른 라우트 보호
+- [x] Toast 상태 전역 관리 (useToastStore)
+- [x] ProtectedRoute로 라우트 보호 구현
 
 ---
 
@@ -120,7 +122,7 @@
 
 ### 보안
 - [x] .env 파일 .gitignore 확인
-- [ ] 환경변수 GitHub 미노출 확인
+- [x] 환경변수 GitHub 미노출 확인
 
 ---
 
@@ -146,9 +148,13 @@
 - [x] 디자인 시스템 (컬러, 타이포그래피)
 - [x] 공용 컴포넌트 (Button, Input, Skeleton, Spinner, ErrorBoundary)
 - [x] Pretendard 폰트 적용
+- [x] Toast 컴포넌트 + toastStore
+- [x] ProtectedRoute 컴포넌트
+- [x] useApi 훅 (axios 기반)
+- [x] useDebounce 훅
+- [x] useThrottle 훅
 
 ### 진행 필요
 - [ ] Modal 컴포넌트
-- [ ] Toast/Alert 컴포넌트
 - [ ] 로딩 상태 UI 적용
 - [ ] API 연동 및 에러 처리
