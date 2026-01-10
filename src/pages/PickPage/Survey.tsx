@@ -76,7 +76,7 @@ export default function SurveyPage() {
   }
 
   return (
-    <div className="bg-[#FFFCF7] px-4 pb-24">
+    <div className="bg-[#FFFCF7] px-4 pb-6">
       {/* 제목 */}
       <section className="pt-6">
         <p className="text-[24px] font-bold leading-[1.3] text-black">두근두근</p>
