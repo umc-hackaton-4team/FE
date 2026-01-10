@@ -15,8 +15,8 @@
 
 ### 사용자 경험 고려
 - [ ] Pagination 또는 InfiniteScroll 구현 (목록 페이지)
-- [ ] 빈 상태(Empty State) UI
-- [ ] 에러 발생 시 재시도 버튼
+- [x] 빈 상태(Empty State) UI
+- [x] 에러 발생 시 재시도 버튼
 
 ### Hook 분리
 - [x] useAuth 훅 구현
@@ -83,8 +83,8 @@
 
 ### 리렌더링 최적화
 - [x] useCallback 활용 (useApi 훅에서 사용)
-- [ ] useMemo 활용
-- [ ] React.memo 활용
+- [x] useMemo 활용
+- [x] React.memo 활용
 
 ### 전역 상태 관리
 - [x] Zustand 설정

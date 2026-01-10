@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { CandyColor } from "../../types/memory";
 
 // 유리병
@@ -37,7 +38,7 @@ interface CandyJarProps {
   size?: number;
 }
 
-export default function CandyJar({ candyColors, size = 60 }: CandyJarProps) {
+function CandyJar({ candyColors, size = 60 }: CandyJarProps) {
   // 최대 3개의 캔디만 표시
   const displayColors = candyColors.slice(0, 3);
   const candyCount = displayColors.length;
@@ -82,3 +83,5 @@ export default function CandyJar({ candyColors, size = 60 }: CandyJarProps) {
     </div>
   );
 }
+
+export default memo(CandyJar);

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import type { Memory } from "../../types/memory";
 import CandyJar from "../../components/common/CandyJar";
 
@@ -13,7 +13,7 @@ interface CalendarProps {
   onNextMonth: () => void;
 }
 
-export default function Calendar({
+function Calendar({
   currentDate,
   selectedDate,
   memoriesByDate,
@@ -184,3 +184,5 @@ export default function Calendar({
     </div>
   );
 }
+
+export default memo(Calendar);

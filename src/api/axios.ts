@@ -44,15 +44,14 @@ api.interceptors.response.use(
           return Promise.reject(error);
         }
 
-        // B. 백엔드에 "토큰 갱신해줘" 요청 (엔드포인트 확인 필요!)
-        // 보통 '/auth/refresh' 같은 주소를 씁니다.
+        // B. 백엔드에 토큰 갱신 요청
         const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
           refreshToken: refreshToken,
         });
 
         // C. 새로 받은 액세스 토큰으로 갈아끼우기
-        // (백엔드가 주는 구조에 따라 data.accessToken 접근 경로 확인)
-        const newAccessToken = data.accessToken;
+        // 백엔드 응답: { success, data: { accessToken, accessTokenExpiresIn } }
+        const newAccessToken = data.data.accessToken;
         setAccessToken(newAccessToken);
 
         // D. 실패했던 원래 요청의 헤더를 새 토큰으로 교체
@@ -64,7 +63,7 @@ api.interceptors.response.use(
         // 리프레시 토큰마저 만료되었거나 서버 에러인 경우
         console.error("토큰 갱신 실패, 로그아웃 처리합니다.");
         useAuthStore.getState().logout();
-        window.location.href = "/"; // 로그인 페이지로 튕겨내기
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }

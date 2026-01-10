@@ -1,3 +1,4 @@
+import { memo } from "react";
 import specialcandy from "../../assets/icons/specialcandy.svg";
 
 interface BoxProps {
@@ -23,4 +24,4 @@ const RecommendationBox = ({ imageUrl, content }: BoxProps) => {
   );
 };
 
-export default RecommendationBox;
+export default memo(RecommendationBox);
