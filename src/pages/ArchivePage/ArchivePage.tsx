@@ -13,6 +13,7 @@ import CandyOrange from "../../assets/icons/candy-orange.svg";
 import CandyPink from "../../assets/icons/candy-pink.svg";
 import CandyGreen from "../../assets/icons/candy-green.svg";
 import CandyBlue from "../../assets/icons/candy-blue.svg";
+import CandySpecial from "../../assets/icons/specialcandy.svg";
 
 const CANDY_ICON_BY_COLOR: Partial<Record<CandyColor, string>> = {
   YELLOW: CandyYellow,
@@ -20,6 +21,7 @@ const CANDY_ICON_BY_COLOR: Partial<Record<CandyColor, string>> = {
   PINK: CandyPink,
   GREEN: CandyGreen,
   BLUE: CandyBlue,
+  SPECIAL: CandySpecial,
 };
 
 export default function ArchivePage() {

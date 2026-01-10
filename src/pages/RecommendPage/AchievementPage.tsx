@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { API_ENDPOINTS } from "../../api/endpoints";
-import { useToastStore } from "../../store/toastStore";
+import { toast } from "../../store/toastStore";
 import { Spinner } from "../../components/common/Spinner";
 import specialcandy from "../../assets/icons/specialcandy.svg";
+import imageCompression from "browser-image-compression";
 import type { Recommendation } from "../../types/recommendation";
 
 // 이미지 추가 아이콘 컴포넌트
@@ -26,11 +27,12 @@ const ImageAddIcon = () => (
 export default function AchievementPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { addToast } = useToastStore();
 
   const item = location.state?.item as Recommendation | undefined;
   const [memo, setMemo] = useState("");
+  const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // 현재 날짜 포맷
   const today = new Date();
@@ -38,23 +40,52 @@ export default function AchievementPage() {
   const dayNames = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
   const dayStr = dayNames[today.getDay()];
 
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const compressedFiles: File[] = [];
+    for (let i = 0; i < files.length; i++) {
+      try {
+        const compressed = await imageCompression(files[i], {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        });
+        compressedFiles.push(compressed);
+      } catch (err) {
+        console.error("이미지 압축 실패:", err);
+      }
+    }
+
+    if (compressedFiles.length + images.length > 4) {
+      toast.warning("이미지는 최대 4장까지 업로드 가능합니다!");
+    }
+
+    setImages((prev) => [...prev, ...compressedFiles].slice(0, 4));
+    e.target.value = "";
+  };
+
   const handleSubmit = async () => {
     if (!item) {
-      addToast("추천 정보가 없습니다.", "error");
+      toast.error("추천 정보가 없습니다.");
       return;
     }
 
     setLoading(true);
     try {
-      // 완료 API 호출
-      await api.post(API_ENDPOINTS.RECOMMENDATIONS.COMPLETE(item.id), {
-        memo,
+      const formData = new FormData();
+      formData.append("request", JSON.stringify({ memo }));
+      images.forEach((img) => formData.append("images", img));
+
+      await api.post(API_ENDPOINTS.RECOMMENDATIONS.COMPLETE(item.id), formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      addToast("사탕이 만들어졌어요!", "success");
+      toast.success("사탕이 만들어졌어요!");
       navigate("/archive");
     } catch (err) {
       console.error(err);
-      addToast("저장에 실패했습니다.", "error");
+      toast.error("저장에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -109,15 +140,39 @@ export default function AchievementPage() {
             </div>
 
             {/* 이미지 업로드 영역 */}
-            <div className="flex gap-3 mt-4">
-              {[0, 1, 2, 3].map((index) => (
-                <button
-                  key={index}
-                  className="w-[80px] h-[80px] rounded-[8px] border border-[#D5D5D5] bg-[#F8F8F8] flex items-center justify-center"
-                >
-                  {index === 0 && <ImageAddIcon />}
-                </button>
-              ))}
+            <div className="mt-4">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+                className="hidden"
+              />
+
+              <div className="grid grid-cols-4 gap-3">
+                {images.map((file, idx) => (
+                  <div
+                    key={idx}
+                    className="relative h-20 overflow-hidden rounded-xl border"
+                  >
+                    <img
+                      src={URL.createObjectURL(file)}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ))}
+
+                {images.length < 4 && (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex h-20 items-center justify-center rounded-xl border border-[#D5D5D5] bg-[#F8F8F8]"
+                  >
+                    <ImageAddIcon />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
