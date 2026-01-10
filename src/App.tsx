@@ -17,7 +17,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/auth/google/callback" element={<AuthCallback />}></Route>
+      <Route path="/auth/callback" element={<AuthCallback />}></Route>
       {/*
       <Route path="/home" element={<HomePage />} />
       <Route path="/pick/survey" element={<Survey />} />
