@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import { GoogleLoginButton } from "./GoogleLoginButton";
+import LogoSymbol from "../../assets/icons/logo-symbol.svg";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col items-center bg-main px-4">
       <div className="mt-[196px] flex flex-col items-center">
         {/* 로고 영역 */}
-        <div className="size-[150px] bg-gray-4" />
+        <img src={LogoSymbol} alt="BONBON 로고" className="size-[150px]" />
 
         {/* 카피 텍스트 */}
         <p className="text-h2 mt-6 text-gray-8">

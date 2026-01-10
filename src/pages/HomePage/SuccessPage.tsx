@@ -2,13 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { CANDY_MAP } from "../../constants/candyImages";
-
-type Memory = {
-  memoryId: number;
-  content: string;
-  candyColor: string;
-  createdAt: string;
-};
+import type { User } from "../../types/user";
+import type { Memory } from "../../types/memory";
+import type { ApiResponse } from "../../types/api";
 
 export default function SuccessPage() {
   const navigate = useNavigate();
@@ -21,8 +17,8 @@ export default function SuccessPage() {
     const fetchData = async () => {
       try {
         const [userRes, memoryRes] = await Promise.all([
-          api.get("/users/me"),
-          api.get("/api/memories"),
+          api.get<ApiResponse<User>>("/users/me"),
+          api.get<ApiResponse<Memory[]>>("/api/memories"),
         ]);
 
         if (userRes.data?.success) {
@@ -34,9 +30,7 @@ export default function SuccessPage() {
           Array.isArray(memoryRes.data.data) &&
           memoryRes.data.data.length > 0
         ) {
-          const latestMemory: Memory =
-            memoryRes.data.data[memoryRes.data.data.length - 1];
-
+          const latestMemory = memoryRes.data.data[memoryRes.data.data.length - 1];
           setLatestCandyColor(latestMemory.candyColor);
         }
       } finally {

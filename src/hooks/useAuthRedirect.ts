@@ -34,8 +34,8 @@ export const useAuthRedirect = () => {
           console.error("사용자 정보 조회 실패:", error);
         }
 
-        // 3. 홈으로 이동
-        navigate("/", { replace: true });
+        // 3. 홈으로 이동 (로그인 직후임을 state로 전달)
+        navigate("/", { replace: true, state: { fromLogin: true } });
       } else {
         navigate("/login", { replace: true });
       }

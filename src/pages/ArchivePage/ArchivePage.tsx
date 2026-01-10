@@ -2,21 +2,23 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import Calendar from "./Calendar";
-import type { Memory, CandyColor } from "../../types/memory";
+import type { Memory } from "../../types/memory";
+import type { CandyColor } from "../../constants/candy";
+import type { ApiResponse } from "../../types/api";
 
 // 사탕 색상별 SVG 아이콘
 import CandyYellow from "../../assets/icons/candy-yellow.svg";
 import CandyOrange from "../../assets/icons/candy-orange.svg";
 import CandyPink from "../../assets/icons/candy-pink.svg";
 import CandyGreen from "../../assets/icons/candy-green.svg";
-import CandyMint from "../../assets/icons/candy-mint.svg";
+import CandyBlue from "../../assets/icons/candy-blue.svg";
 
-const CANDY_ICON_BY_COLOR: Record<CandyColor, string> = {
+const CANDY_ICON_BY_COLOR: Partial<Record<CandyColor, string>> = {
   YELLOW: CandyYellow,
   ORANGE: CandyOrange,
   PINK: CandyPink,
   GREEN: CandyGreen,
-  MINT: CandyMint,
+  BLUE: CandyBlue,
 };
 
 export default function ArchivePage() {
@@ -53,7 +55,7 @@ export default function ArchivePage() {
       try {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;
-        const response = await api.get(`/memories?year=${year}&month=${month}`);
+        const response = await api.get<ApiResponse<Memory[]>>(`/memories?year=${year}&month=${month}`);
         setMemories(response.data.data || []);
       } catch (error) {
         console.error("Failed to fetch memories:", error);

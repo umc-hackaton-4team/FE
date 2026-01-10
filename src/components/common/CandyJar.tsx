@@ -1,5 +1,5 @@
 import { memo } from "react";
-import type { CandyColor } from "../../types/memory";
+import type { CandyColor } from "../../constants/candy";
 
 // 유리병
 import GlassJar from "../../assets/icons/glass-jar.png";
@@ -9,14 +9,15 @@ import CandyYellow from "../../assets/icons/candy-yellow.svg";
 import CandyOrange from "../../assets/icons/candy-orange.svg";
 import CandyPink from "../../assets/icons/candy-pink.svg";
 import CandyGreen from "../../assets/icons/candy-green.svg";
-import CandyMint from "../../assets/icons/candy-mint.svg";
+import CandyBlue from "../../assets/icons/candy-blue.svg";
 
-const CANDY_IMAGES: Record<CandyColor, string> = {
+// 기본 5색만 이미지 매핑 (SPECIAL은 별도 처리)
+const CANDY_IMAGES: Partial<Record<CandyColor, string>> = {
   YELLOW: CandyYellow,
   ORANGE: CandyOrange,
   PINK: CandyPink,
   GREEN: CandyGreen,
-  MINT: CandyMint,
+  BLUE: CandyBlue,
 };
 
 // 캔디 개수에 따른 위치 설정 (% 기준)
@@ -65,10 +66,13 @@ function CandyJar({ candyColors, size = 60 }: CandyJarProps) {
       {/* 캔디들 */}
       {displayColors.map((color, index) => {
         const position = positions[index];
+        const imageSrc = CANDY_IMAGES[color];
+        // SPECIAL 등 이미지가 없는 색상은 스킵
+        if (!imageSrc) return null;
         return (
           <img
             key={`${color}-${index}`}
-            src={CANDY_IMAGES[color]}
+            src={imageSrc}
             alt={color}
             className="absolute -translate-x-1/2 -translate-y-1/2"
             style={{

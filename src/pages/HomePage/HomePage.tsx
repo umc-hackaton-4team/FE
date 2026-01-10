@@ -1,28 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../../api/axios";
 import type { User } from "../../types/user";
+import type { ApiResponse } from "../../types/api";
 import { toast } from "../../store/toastStore";
 import imageCompression from "browser-image-compression";
 import { Spinner } from "../../components/common/Spinner";
-
-const COLORS = [
-  { name: "YELLOW", className: "bg-[#FFD588]" },
-  { name: "ORANGE", className: "bg-[#FFA15D]" },
-  { name: "PINK", className: "bg-[#FFBACB]" },
-  { name: "GREEN", className: "bg-[#C9E893]" },
-  { name: "MINT", className: "bg-[#9FEAE0]" },
-];
+import { DemoDataModal } from "../../components/common/DemoDataModal";
+import { CANDY_COLORS, CANDY_COLOR_STYLES, type BasicCandyColor } from "../../constants/candy";
 
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
   const [userLoading, setUserLoading] = useState(true);
   const [content, setContent] = useState("");
-  const [selectedColor, setSelectedColor] = useState("YELLOW");
+  const [selectedColor, setSelectedColor] = useState<BasicCandyColor>("YELLOW");
   const [images, setImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const today = new Date();
   const dateText = `${today.getMonth() + 1} / ${today.getDate()} ${
@@ -32,7 +29,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await api.get("/users/me");
+        const res = await api.get<ApiResponse<User>>("/users/me");
         setUser(res.data.data);
       } catch (error) {
         console.error("사용자 정보 조회 실패:", error);
@@ -43,6 +40,16 @@ export default function HomePage() {
     };
     fetchUser();
   }, []);
+
+  // 로그인 직후 데모 데이터 모달 표시
+  useEffect(() => {
+    const state = location.state as { fromLogin?: boolean } | null;
+    if (state?.fromLogin) {
+      setShowDemoModal(true);
+      // state 초기화 (새로고침 시 모달 다시 안 뜨게)
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -108,6 +115,10 @@ export default function HomePage() {
 
   return (
     <div className="flex h-full flex-col bg-[#FFFCF7] px-4 pb-[88px] pt-4">
+      <DemoDataModal
+        isOpen={showDemoModal}
+        onClose={() => setShowDemoModal(false)}
+      />
       <section>
         <p className="text-lg font-bold">
           안녕하세요,{" "}
@@ -131,12 +142,12 @@ export default function HomePage() {
         </p>
 
         <div className="mb-4 flex gap-3">
-          {COLORS.map((c) => (
+          {CANDY_COLORS.map((color) => (
             <button
-              key={c.name}
-              onClick={() => setSelectedColor(c.name)}
-              className={`h-8 w-8 rounded-full ${c.className} ${
-                selectedColor === c.name ? "ring-2 ring-black" : ""
+              key={color}
+              onClick={() => setSelectedColor(color)}
+              className={`h-8 w-8 rounded-full ${CANDY_COLOR_STYLES[color].bg} ${
+                selectedColor === color ? "ring-2 ring-black" : ""
               }`}
             />
           ))}

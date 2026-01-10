@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/axios";
-import { getTodayDate } from "../utils/dateUtils"; // 경로 확인 필요
-
-export interface Recommendation {
-  id: number;
-  content: string;
-  imageUrl?: string; // 이미지 있는 경우를 대비
-  // 태그 정보 등이 있다면 여기에 추가 (예: tags: string[])
-}
+import { getTodayDate } from "../utils/dateUtils";
+import type { Recommendation, RecommendationsData } from "../types/recommendation";
+import type { ApiResponse } from "../types/api";
 
 export const useRecommendations = () => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // ✨ 여기가 핵심: '좋아요'를 눌러 확정된 아이템을 저장
+  // '좋아요'를 눌러 확정된 아이템을 저장
   const [confirmedItem, setConfirmedItem] = useState<Recommendation | null>(
     null
   );
@@ -23,10 +19,13 @@ export const useRecommendations = () => {
     const fetchRecommendData = async () => {
       try {
         const today = getTodayDate();
-        const res = await api.get(`/recommendations?date=${today}`);
+        const res = await api.get<ApiResponse<RecommendationsData>>(
+          `/recommendations?date=${today}`
+        );
         setRecommendations(res.data.data.recommendations);
       } catch (err) {
         console.error(err);
+        setError("추천 데이터를 불러오는데 실패했습니다.");
       } finally {
         setLoading(false);
       }
@@ -65,9 +64,10 @@ export const useRecommendations = () => {
 
   return {
     loading,
+    error,
     isFinished,
     currentItem,
-    confirmedItem, // View에서 화면 분기용으로 사용
+    confirmedItem,
     handlePass,
     handleLike,
     handleCancelConfirm,
