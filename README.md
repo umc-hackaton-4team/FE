@@ -15,13 +15,19 @@ UMC 해커톤 4팀 프론트엔드 프로젝트
 
 ```bash
 # 의존성 설치
-npm install
+pnpm install
 
 # 개발 서버 실행
-npm run dev
+pnpm dev
 
 # 빌드
-npm run build
+pnpm build
+
+# 린트
+pnpm lint
+
+# 포맷팅
+pnpm format
 ```
 
 ## 배포
