@@ -5,20 +5,13 @@ import type { User } from "../../types/user";
 import { toast } from "../../store/toastStore";
 import imageCompression from "browser-image-compression";
 import { Spinner } from "../../components/common/Spinner";
-
-const COLORS = [
-  { name: "YELLOW", className: "bg-[#FFD588]" },
-  { name: "ORANGE", className: "bg-[#FFA15D]" },
-  { name: "PINK", className: "bg-[#FFBACB]" },
-  { name: "GREEN", className: "bg-[#C9E893]" },
-  { name: "MINT", className: "bg-[#9FEAE0]" },
-];
+import { CANDY_COLORS, CANDY_COLOR_STYLES, type BasicCandyColor } from "../../constants/candy";
 
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
   const [userLoading, setUserLoading] = useState(true);
   const [content, setContent] = useState("");
-  const [selectedColor, setSelectedColor] = useState("YELLOW");
+  const [selectedColor, setSelectedColor] = useState<BasicCandyColor>("YELLOW");
   const [images, setImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -131,12 +124,12 @@ export default function HomePage() {
         </p>
 
         <div className="mb-4 flex gap-3">
-          {COLORS.map((c) => (
+          {CANDY_COLORS.map((color) => (
             <button
-              key={c.name}
-              onClick={() => setSelectedColor(c.name)}
-              className={`h-8 w-8 rounded-full ${c.className} ${
-                selectedColor === c.name ? "ring-2 ring-black" : ""
+              key={color}
+              onClick={() => setSelectedColor(color)}
+              className={`h-8 w-8 rounded-full ${CANDY_COLOR_STYLES[color].bg} ${
+                selectedColor === color ? "ring-2 ring-black" : ""
               }`}
             />
           ))}

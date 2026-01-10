@@ -1,4 +1,7 @@
-export type CandyColor = "YELLOW" | "ORANGE" | "PINK" | "GREEN" | "MINT";
+import type { CandyColor } from "../constants/candy";
+
+// CandyColor는 constants/candy.ts에서 관리
+export type { CandyColor };
 
 export interface Memory {
   memoryId: number;
