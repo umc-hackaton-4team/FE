@@ -118,44 +118,14 @@ export default function MemoryDetailPage() {
             return (
               <div
                 key={index}
-                className="flex h-20 items-center justify-center rounded-lg border border-gray-4 bg-gray-2"
+                className="flex h-20 items-center justify-center overflow-hidden rounded-lg border border-gray-4 bg-gray-2"
               >
-                {imageUrl ? (
+                {imageUrl && (
                   <img
                     src={imageUrl}
                     alt={`memory-${index}`}
-                    className="h-full w-full rounded-lg object-cover"
+                    className="h-full w-full object-cover"
                   />
-                ) : (
-                  <svg
-                    width="30"
-                    height="30"
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M26.25 18.75V23.75C26.25 24.4404 25.9735 25.1027 25.4812 25.5809C24.9889 26.059 24.3185 26.3266 23.6187 26.3266H6.38125C5.68145 26.3266 5.01109 26.059 4.51878 25.5809C4.02646 25.1027 3.75 24.4404 3.75 23.75V18.75"
-                      stroke="#B1B1B1"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M21.25 10L15 3.75L8.75 10"
-                      stroke="#B1B1B1"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M15 3.75V18.75"
-                      stroke="#B1B1B1"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
                 )}
               </div>
             );
