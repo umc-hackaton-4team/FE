@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "../api/ axios"; // 경로 확인 필요
+import { api } from "../api/axios";
 import { getTodayDate } from "../utils/dateUtils"; // 경로 확인 필요
 
 export interface Recommendation {

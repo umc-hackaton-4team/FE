@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "../api/ axios"; // axios 인스턴스 경로 확인
+import { api } from "../api/axios";
 
 interface User {
   id: number;
