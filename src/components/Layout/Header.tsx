@@ -1,4 +1,4 @@
-import Logo from "../../assets/icons/graybox.svg";
+import Logo from "../../assets/icons/grayCandy.svg";
 
 export default function Header() {
   return (

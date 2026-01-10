@@ -5,8 +5,9 @@ import AuthCallback from "./pages/LoginPage/AuthCallback";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Layout from "../src/components/Layout/Layout";
 import Survey from "./pages/PickPage/survey";
-
-/*import Swipe from "./pages/pick/swipe";
+import Swipe from "./pages/PickPage/swipe";
+import PickLoadingPage from "./pages/PickPage/PickLoading";
+/*
 import Result from "./pages/pick/result";
 import RefinedSwipe from "./pages/pick/refinedSwipe";
 import Archive from "./pages/archive";
@@ -20,10 +21,11 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/pick/" element={<Survey />} />
+        <Route path="/pick/swipe" element={<Swipe />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
+        
         {/*
-        <Route path="/pick/swipe" element={<Swipe />} />
         <Route path="/pick/result" element={<Result />} />
         <Route path="/pick/refinedSwipe" element={<RefinedSwipe />} />
         <Route path="/archive" element={<Archive />} />
@@ -32,6 +34,7 @@ function App() {
         <Route path="/archive/detailPopup" element={<DetailPopup />} />
         */}
       </Route>
+      <Route path="/pick/loading" element={<PickLoadingPage />} />
     </Routes>
   );
 }

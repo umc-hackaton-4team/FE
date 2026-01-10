@@ -23,7 +23,7 @@ export default function SurveyPage() {
   const handleSubmit = async () => {
     try {
       await api.post("/conditions", form);
-      navigate("/pick/result");
+      navigate("/pick/swipe");
     } catch {
       alert("이미 오늘 상태를 저장했어요!");
     }
@@ -31,7 +31,7 @@ export default function SurveyPage() {
 
   return (
     <div className="bg-[#FFFCF7] px-5 pb-24">
-      <section className="pt-6">
+      <section className="pt-6 text-24px">
         <p className="text-xl font-bold">두근두근</p>
         <p className="text-xl font-bold">
           오늘, 어떤 행복을 만들어 볼까요?
@@ -76,7 +76,7 @@ export default function SurveyPage() {
         options={[
           { label: "집 안 또는 실내", value: "INSIDE" },
           { label: "야외로 나가자!", value: "OUTSIDE" },
-          { label: "상관 없어요", value: "ANY" },
+          { label: "상관 없어요.", value: "ANY" },
         ]}
         selected={form.activityLocation}
         onSelect={(v) =>
@@ -86,9 +86,9 @@ export default function SurveyPage() {
 
       <button
         onClick={handleSubmit}
-        className="mt-8 w-full rounded-xl bg-red-400 py-4 font-semibold text-white"
+        className="mt-8 w-full rounded-xl bg-[#FC8080] py-4 font-semibold text-white"
       >
-        오늘의 사탕 뽑으러 가기
+        다음 단계
       </button>
     </div>
   );
