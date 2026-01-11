@@ -52,7 +52,7 @@ export default function SurveyPage() {
         // 성공하면 이미 오늘 condition이 있음 → 결과 페이지로 이동
         toast.info("이미 오늘의 설문을 완료했어요! 추천 결과를 확인하세요.");
         navigate("/pick/result", { replace: true });
-      } catch (error: unknown) {
+      } catch {
         // 404면 오늘 condition이 없음 → 설문 진행
         // 다른 에러는 무시하고 설문 진행
         setCheckingCondition(false);
