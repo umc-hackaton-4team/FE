@@ -80,7 +80,7 @@ export default function SwipePage() {
       </section>
 
       {/* 텍스트 입력 영역 */}
-      <div className="mt-4 h-[516px] w-full rounded-[16px] border border-[#B1B1B1] bg-white p-5">
+      <div className="mt-4 h-[310px] w-full rounded-[16px] border border-[#B1B1B1] bg-white p-5">
         <textarea
           className="h-full w-full resize-none text-[16px] leading-[1.5] text-[#222] placeholder:text-[#909090] focus:outline-none"
           placeholder={`${
